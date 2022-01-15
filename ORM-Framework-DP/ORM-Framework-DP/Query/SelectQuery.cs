@@ -21,10 +21,10 @@ namespace ORM_Framework_DP
 
         public List<T> Execute()
         {
-            string query = "SELECT * FROM company;";
             Type type = null;
+            Console.WriteLine(queryString);
 
-            return dBConnection.Select<T>(query, type, attributeHelper);
+            return dBConnection.Select<T>(queryString, type, attributeHelper);
         }
     }
 }

@@ -20,13 +20,23 @@ namespace ORM_Framework_DP
             query += string.Format("SELECT * FROM {0}", this.tableName);
             //if (this.condition != null)
             //{
-            //    query += string.Format(" WHERE {0}", this.condition.parseToSQL(featureMap));
+            //    query += string.format(" where {0}", this.condition.parsetosql(featuremap));
             //}
+
+            if (!string.IsNullOrEmpty(this.condition))
+            {
+                query += string.Format(" WHERE {0}", this.condition);
+            }
 
 
             if (!string.IsNullOrEmpty(this.groupBy))
             {
                 query += string.Format(" GROUP BY {0}", this.groupBy);
+            }
+
+            if (!string.IsNullOrEmpty(this.having))
+            {
+                query += string.Format(" HAVING {0}", this.having);
             }
 
             query += ";";

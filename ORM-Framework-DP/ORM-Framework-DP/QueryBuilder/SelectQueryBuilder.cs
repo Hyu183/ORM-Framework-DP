@@ -9,8 +9,10 @@ namespace ORM_Framework_DP
     {
         protected string tableName;
         //protected Condition condition;
+        protected string condition;
         protected string orderByType;
         protected string groupBy;
+        protected string having;
         //protected Condition havingCondition;
         AttributeHelper<T> attributeHelper;
 
@@ -23,14 +25,21 @@ namespace ORM_Framework_DP
             tableName = attributeHelper.GetTableName();
         }
 
-        public SelectQueryBuilder<T> Where()
+        public SelectQueryBuilder<T> Where(string condition)
         {
+            this.condition = condition;
             return this;
         }
 
         public SelectQueryBuilder<T> GroupBy(String groupBy)
         {
             this.groupBy = groupBy;
+            return this;
+        }
+
+        public SelectQueryBuilder<T> Having(String having)
+        {
+            this.having = having;
             return this;
         }
 

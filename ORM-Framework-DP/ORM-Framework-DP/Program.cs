@@ -19,10 +19,12 @@ namespace ORM_Framework_DP
 
             //test insert company
             ORM<Company> orm2 = new ORM<Company>(dBConnection);
-            Company company1 = new Company("Arizona",24000,DateTime.Now);
+            Company company1 = new Company("Arizona",26000,DateTime.Now);
 
             //orm2.Insert(company1).Execute();
-            List<Company> companies = orm2.Select().GetSelectQuery().Execute();
+
+            List<Company> companies = orm2.Select().Where("id > 1").GroupBy("name")
+                .Having("count(id) > 2").GetSelectQuery().Execute();
 
             foreach (Company company in companies)
             {
