@@ -47,6 +47,54 @@ namespace ORM_Framework_DP
             return cmd.ExecuteNonQuery();
         }
 
+        private List<T> ExecuteQuery<T>(string query, AttributeHelper<T> attributeHelper) where T : new()
+        {
+            //Open();
+            //MySqlCommand cmd = connection.CreateCommand();
+            //cmd.CommandText = query;
+            //MySqlDataReader myReader;
+            //myReader = cmd.ExecuteReader();
+            //try
+            //{
+            //    while (myReader.Read())
+            //    {
+            //        int id = myReader.GetFieldValue<int>(0);
+            //        string name = myReader.GetFieldValue<string>(1);
+            //        DateTime dateTime = myReader.GetFieldValue<DateTime>(3);
+
+            //        Console.WriteLine(name);
+            //    }
+            //}
+            //finally
+            //{
+            //    Console.WriteLine("Yolo");
+            //    Close();
+            //}
+            Open();
+            List<T> res = new List<T>();
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = query;
+            MySqlDataReader r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
+
+                for (int inc = 0; inc < r.FieldCount; inc++)
+                {
+                    string propName = r.GetName(inc);
+                    columeNameValuePairs.Add(propName, r.GetValue(inc));
+                }
+
+                T t = attributeHelper.BuildObjectFromValues(columeNameValuePairs);
+
+                res.Add(t);
+            }
+            r.Close();
+
+            Close();
+            return res;
+        }
+
         public override int Delete(string query)
         {
             return ExecuteNonQuery(query);
@@ -57,9 +105,9 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override int Update(string query)
+        public override List<T> Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
-            return ExecuteNonQuery(query);
+            return ExecuteQuery<T>(query, attributeHelper);
         }
 
         public override int Select(string query, Type type)

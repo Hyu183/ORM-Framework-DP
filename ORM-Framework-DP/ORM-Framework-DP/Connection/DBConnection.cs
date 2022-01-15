@@ -10,7 +10,7 @@ namespace ORM_Framework_DP
         abstract public void Open();
         abstract public void Close();
         abstract public int Insert(string query);
-        abstract public int Update(string query);
+        abstract public List<T> Update<T>(string queryString, Type type, AttributeHelper<T> attributeHelper) where T : new ();
         abstract public int Delete(string query);
         abstract public int Select(string query,Type type);
         abstract protected string CreateConnectionString(string host, string dbName,string port, string uid, string password);

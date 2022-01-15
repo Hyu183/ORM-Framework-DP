@@ -11,7 +11,7 @@ namespace ORM_Framework_DP
         static void Main(string[] args)
         {
             //test insert employee
-            DBConnection dBConnection = new MySQLConnection("localhost","company","3360","root","");
+            DBConnection dBConnection = new MySQLConnection("localhost","company","3306","root","1234");
             //ORM<Employee> orm = new ORM<Employee>(dBConnection);
             //Employee employee1 = new Employee(6,"ABCD", "Male", 22, 9999, 1);
             //orm.Insert(employee1).Execute();
