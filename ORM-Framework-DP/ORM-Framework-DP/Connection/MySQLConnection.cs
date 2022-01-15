@@ -78,7 +78,7 @@ namespace ORM_Framework_DP
             MySqlDataReader r = cmd.ExecuteReader();
             while (r.Read())
             {
-                Dictionary<string,object> columeNameValuePairs = new Dictionary<string,object>();
+                Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
 
                 for (int inc = 0; inc < r.FieldCount; inc++)
                 {
@@ -96,9 +96,9 @@ namespace ORM_Framework_DP
             return res;
         }
 
-        public override int Delete(string query)
+        public override List<T> Delete<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
-            return ExecuteNonQuery(query);
+            return ExecuteQuery<T>(query, attributeHelper);
         }
 
         public override int Insert(string query)

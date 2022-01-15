@@ -139,5 +139,12 @@ namespace ORM_Framework_DP
 
             return obj;
         }
+
+        public string GetCondition()
+        {
+            Type type = typeof(T);
+
+            return "";
+        }
     }
 }
