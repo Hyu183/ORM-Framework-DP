@@ -22,6 +22,9 @@ namespace ORM_Framework_DP
         [Column("established_date")]
         public DateTime EstablishedDate { get; set; }
 
+        [HasMany("employee", "ID=company_id")]
+        public List<Employee> Employees { get; set; }
+
         public Company() { }
 
         public Company( string name, int numOfEmployee, DateTime establishedDate)

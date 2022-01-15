@@ -11,11 +11,20 @@ namespace ORM_Framework_DP
     public class MySQLConnection : DBConnection
     {
         private MySqlConnection connection;
+        private string connectionString;
 
         public MySQLConnection(string host, string dbName,string port, string uid, string password)
         {
             string cnnString = CreateConnectionString(host,dbName,port,uid,password);
+            connectionString = cnnString;
             connection = new MySqlConnection(cnnString);
+            Open();
+        }
+
+        public MySQLConnection(string connectionString)
+        {
+            this.connectionString = connectionString;
+            connection = new MySqlConnection(connectionString);
             Open();
         }
 
@@ -50,27 +59,6 @@ namespace ORM_Framework_DP
 
         private List<T> ExecuteQuery<T>(string query, AttributeHelper<T> attributeHelper) where T : new()
         {
-            //Open();
-            //MySqlCommand cmd = connection.CreateCommand();
-            //cmd.CommandText = query;
-            //MySqlDataReader myReader;
-            //myReader = cmd.ExecuteReader();
-            //try
-            //{
-            //    while (myReader.Read())
-            //    {
-            //        int id = myReader.GetFieldValue<int>(0);
-            //        string name = myReader.GetFieldValue<string>(1);
-            //        DateTime dateTime = myReader.GetFieldValue<DateTime>(3);
-
-            //        Console.WriteLine(name);
-            //    }
-            //}
-            //finally
-            //{
-            //    Console.WriteLine("Yolo");
-            //    Close();
-            //}
             Open();
             List<T> res = new List<T>();
             MySqlCommand cmd = connection.CreateCommand();
@@ -88,12 +76,69 @@ namespace ORM_Framework_DP
 
                 T t = attributeHelper.BuildObjectFromValues(columeNameValuePairs);
 
+                //  Has Many
+                List<HasMany> hasManies = attributeHelper.GetHasManyList();
+                foreach (HasMany many in hasManies)
+                {
+                    
+                    string whereCondition = " WHERE 1";
+                    foreach (var pk in many.PKPairsDic)
+                    {
+                        whereCondition += " AND ";
+                        string propName = pk.Key;
+                        string targetColumeName = pk.Value;
+                        var value = attributeHelper.GetValue(t, propName);
+                        whereCondition += string.Format(" {0}={1} ", targetColumeName, value.ToString());
+                    }
+                    whereCondition += ";";
+                    string manyQuery = string.Format("SELECT * FROM {0} {1}", many.TableName, whereCondition);
+
+                    Type manyType = many.propertyInfo.PropertyType;
+                    Type itemType = manyType.GetGenericArguments()[0];
+                    //Type attributeHelperType = typeof(AttributeHelper<>);
+                    //Type constructedClass = attributeHelperType.MakeGenericType(manyType);
+                    //dynamic manyAttributeHelper = Activator.CreateInstance(constructedClass);
+
+                    MethodInfo method =
+                    typeof(MySQLConnection).GetMethod(nameof(MySQLConnection.SelectNoRelation))
+                        .MakeGenericMethod(itemType);
+                        
+
+                    many.propertyInfo.SetValue(t, method
+                        .Invoke(new MySQLConnection(this.connectionString), new object[] { manyQuery }));
+                }
+
                 res.Add(t);
             }
             r.Close();
 
             Close();
             return res;
+        }
+
+        public List<T> SelectNoRelation<T>(string query) where T : new()
+        {
+            Open();
+            AttributeHelper<T> attributeHelper = new AttributeHelper<T>();
+            List<T> manyList = new List<T>();
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = query;
+            MySqlDataReader r = command.ExecuteReader();
+
+            while (r.Read())
+            {
+                Dictionary<string, object> manyColumeNameValuePairs = new Dictionary<string, object>();
+                for (int inc = 0; inc < r.FieldCount; inc++)
+                {
+                    string propName = r.GetName(inc);
+                    manyColumeNameValuePairs.Add(propName, r.GetValue(inc));
+                }
+                T o = attributeHelper.BuildObjectFromValues(manyColumeNameValuePairs);
+                manyList.Add(o);
+            }
+            Close();
+
+            return manyList;
         }
 
         public override int Delete(string query)
