@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Text;
 
@@ -47,6 +48,53 @@ namespace ORM_Framework_DP
             return cmd.ExecuteNonQuery();
         }
 
+        private List<T> ExecuteQuery<T>(string query) where T : new()
+        {
+            //Open();
+            //MySqlCommand cmd = connection.CreateCommand();
+            //cmd.CommandText = query;
+            //MySqlDataReader myReader;
+            //myReader = cmd.ExecuteReader();
+            //try
+            //{
+            //    while (myReader.Read())
+            //    {
+            //        int id = myReader.GetFieldValue<int>(0);
+            //        string name = myReader.GetFieldValue<string>(1);
+            //        DateTime dateTime = myReader.GetFieldValue<DateTime>(3);
+
+            //        Console.WriteLine(name);
+            //    }
+            //}
+            //finally
+            //{
+            //    Console.WriteLine("Yolo");
+            //    Close();
+            //}
+            Open();
+            List<T> res = new List<T>();
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = query;
+            MySqlDataReader r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                T t = new T();
+
+                for (int inc = 0; inc < r.FieldCount; inc++)
+                {
+                    Type type = t.GetType();
+                    PropertyInfo prop = type.GetProperty(r.GetName(inc));
+                    prop.SetValue(t, Convert.ChangeType(r.GetValue(inc), prop.PropertyType), null);
+                }
+
+                res.Add(t);
+            }
+            r.Close();
+
+            Close();
+            return res;
+        }
+
         public override int Delete(string query)
         {
             return ExecuteNonQuery(query);
@@ -62,9 +110,13 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override int Select(string query, Type type)
+        public override List<Object> Select(string query, Type type)
         {
-            throw new NotImplementedException();
+            List<Object> list = new List<Object>();
+
+            ExecuteQuery(query);
+
+            return list;
         }
     }
 }

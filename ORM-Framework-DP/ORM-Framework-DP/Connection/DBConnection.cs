@@ -12,7 +12,7 @@ namespace ORM_Framework_DP
         abstract public int Insert(string query);
         abstract public int Update(string query);
         abstract public int Delete(string query);
-        abstract public int Select(string query,Type type);
+        abstract public List<Object> Select(string query,Type type);
         abstract protected string CreateConnectionString(string host, string dbName,string port, string uid, string password);
     }
 }
