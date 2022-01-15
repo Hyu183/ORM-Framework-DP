@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ORM_Framework_DP
 {
-    class MySQLSelectQueryBuilder : SelectQueryBuilder
+    class MySQLSelectQueryBuilder<T> : SelectQueryBuilder<T> where T : new()
     {
-        public MySQLSelectQueryBuilder(DBConnection db, string tableName) : base(db, tableName)
+        public MySQLSelectQueryBuilder(DBConnection db, AttributeHelper<T> attributeHelper) : 
+            base(db, attributeHelper)
         {
-
         }
 
         override

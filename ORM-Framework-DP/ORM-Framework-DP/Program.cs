@@ -22,9 +22,13 @@ namespace ORM_Framework_DP
             Company company1 = new Company("Arizona",24000,DateTime.Now);
 
             //orm2.Insert(company1).Execute();
-            orm2.Select().GetSelectQuery().Execute();
+            List<Company> companies = orm2.Select().GetSelectQuery().Execute();
 
-           
+            foreach (Company company in companies)
+            {
+                Console.WriteLine(company.Name);
+            }
+
 
             dBConnection.Close();           
 

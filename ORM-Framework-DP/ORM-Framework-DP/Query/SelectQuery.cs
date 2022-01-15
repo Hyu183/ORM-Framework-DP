@@ -10,11 +10,13 @@ namespace ORM_Framework_DP
     {
         private string queryString;
         private DBConnection dBConnection;
+        private AttributeHelper<T> attributeHelper;
 
-        public SelectQuery(string queryString, DBConnection dBConnection)
+        public SelectQuery(string queryString, DBConnection dBConnection, AttributeHelper<T> attributeHelper)
         {
             this.queryString = queryString;
             this.dBConnection = dBConnection;
+            this.attributeHelper = attributeHelper;
         }
 
         public List<T> Execute()
@@ -22,7 +24,7 @@ namespace ORM_Framework_DP
             string query = "SELECT * FROM company;";
             Type type = null;
 
-            return dBConnection.Select(query, type);
+            return dBConnection.Select<T>(query, type, attributeHelper);
         }
     }
 }

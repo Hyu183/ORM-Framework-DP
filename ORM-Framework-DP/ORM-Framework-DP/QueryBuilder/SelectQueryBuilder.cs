@@ -5,28 +5,30 @@ using System.Text;
 
 namespace ORM_Framework_DP
 {
-    public abstract class SelectQueryBuilder
+    public abstract class SelectQueryBuilder<T> where T : new()
     {
         protected string tableName;
         //protected Condition condition;
         protected string orderByType;
         protected string groupBy;
         //protected Condition havingCondition;
+        AttributeHelper<T> attributeHelper;
 
         protected DBConnection dBConnection;
 
-        public SelectQueryBuilder(DBConnection db, string tableName)
+        public SelectQueryBuilder(DBConnection db, AttributeHelper<T> attributeHelper)
         {
             dBConnection = db;
-            this.tableName = tableName;
+            this.attributeHelper = attributeHelper;
+            tableName = attributeHelper.GetTableName();
         }
 
-        public SelectQueryBuilder Where()
+        public SelectQueryBuilder<T> Where()
         {
             return this;
         }
 
-        public SelectQueryBuilder GroupBy(String groupBy)
+        public SelectQueryBuilder<T> GroupBy(String groupBy)
         {
             this.groupBy = groupBy;
             return this;
@@ -34,10 +36,10 @@ namespace ORM_Framework_DP
 
         public abstract string getQueryString(Dictionary<string, string> featureMap);
 
-        public SelectQuery GetSelectQuery()
+        public SelectQuery<T> GetSelectQuery()
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
-            return new SelectQuery(getQueryString(dic), dBConnection);
+            return new SelectQuery<T>(getQueryString(dic), dBConnection, attributeHelper);
         }
 
     }

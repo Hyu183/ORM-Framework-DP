@@ -48,7 +48,7 @@ namespace ORM_Framework_DP
             return cmd.ExecuteNonQuery();
         }
 
-        private List<T> ExecuteQuery<T>(string query) where T : new()
+        private List<T> ExecuteQuery<T>(string query, AttributeHelper<T> attributeHelper) where T : new()
         {
             //Open();
             //MySqlCommand cmd = connection.CreateCommand();
@@ -78,14 +78,15 @@ namespace ORM_Framework_DP
             MySqlDataReader r = cmd.ExecuteReader();
             while (r.Read())
             {
-                T t = new T();
+                Dictionary<string,object> columeNameValuePairs = new Dictionary<string,object>();
 
                 for (int inc = 0; inc < r.FieldCount; inc++)
                 {
-                    Type type = t.GetType();
-                    PropertyInfo prop = type.GetProperty(r.GetName(inc));
-                    prop.SetValue(t, Convert.ChangeType(r.GetValue(inc), prop.PropertyType), null);
+                    string propName = r.GetName(inc);
+                    columeNameValuePairs.Add(propName, r.GetValue(inc));
                 }
+
+                T t = attributeHelper.BuildObjectFromValues(columeNameValuePairs);
 
                 res.Add(t);
             }
@@ -110,13 +111,10 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override List<Object> Select(string query, Type type)
+        public override List<T> Select<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
-            List<Object> list = new List<Object>();
+            return ExecuteQuery<T>(query, attributeHelper);
 
-            ExecuteQuery(query);
-
-            return list;
         }
     }
 }

@@ -106,5 +106,38 @@ namespace ORM_Framework_DP
 
             return obj;
         }
+
+        private string getColumeNameFromPropertyName(string propName)
+        {
+            Type type = typeof(T);
+            var props = type.GetProperties();
+            foreach (var p in props)
+            {
+                if (p.Name == propName)
+                {
+                    Column col = p.GetCustomAttribute<Column>();
+                    return col.ColumnName;
+                }
+
+            }
+            return null;
+        }
+
+        public T BuildObjectFromValues(Dictionary<string, object> columeValuePair)
+        {
+            //Dictionary is pairs of colume names and values of these columes
+            T obj = new T();
+
+            var props = obj.GetType().GetProperties();
+
+            foreach (var prop in props)
+            {
+                string columeName = getColumeNameFromPropertyName(prop.Name);
+                object columeValue = columeValuePair[columeName];
+                prop.SetValue(obj, Convert.ChangeType(columeValue, prop.PropertyType));
+            }
+
+            return obj;
+        }
     }
 }
