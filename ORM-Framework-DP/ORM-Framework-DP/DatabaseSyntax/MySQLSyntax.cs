@@ -8,6 +8,31 @@ namespace ORM_Framework_DP
 {
     public class MySQLSyntax : DatabaseSyntax
     {
+        public string BuildQuery(string tableName, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
+        {
+
+            string query = GetSelectAllPart(tableName);
+
+            if (whereConditon != null)
+            {
+                query += " " + GetWherePart(whereConditon);
+            }
+
+            if (groupByColumeNames != null)
+            {
+                query += " " + GetGroupByPart(groupByColumeNames);
+            }
+
+            if (havingCondition != null)
+            {
+                query += " " + GetWherePart(havingCondition);
+            }
+
+            query += ";";
+
+            return query;
+        }
+
         public string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName)
         {
             string query = string.Format("SELECT * FROM {0} WHERE 1", tableName);
@@ -47,14 +72,14 @@ namespace ORM_Framework_DP
                 host, dbName, port, uid, password);
         }
 
-        public string GetGroupByPart(List<string> columeNames)
+        public string GetGroupByPart(string[] columeNames)
         {
-            throw new NotImplementedException();
+            return "GROUP BY " + string.Join(", ", columeNames);
         }
 
-        public string GetHavingPart(string condition)
+        public string GetHavingPart(Condition condition)
         {
-            throw new NotImplementedException();
+            return string.Format("HAVING {0}", condition.parseToSQL());
         }
 
         public string GetOr()
@@ -67,9 +92,9 @@ namespace ORM_Framework_DP
             return string.Format("SELECT * FROM {0}", tableName);
         }
 
-        public string GetWherePart(string condition)
+        public string GetWherePart(Condition condition)
         {
-            throw new NotImplementedException();
+            return string.Format("WHERE {0}", condition.parseToSQL());
         }
     }
 }

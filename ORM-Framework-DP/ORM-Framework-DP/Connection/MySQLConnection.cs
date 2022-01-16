@@ -12,19 +12,14 @@ namespace ORM_Framework_DP
     {
         private MySqlConnection connection;
         private string connectionString;
+        private DatabaseSyntax databaseSyntax;
 
-        public MySQLConnection(string host, string dbName,string port, string uid, string password)
+        public MySQLConnection(string host, string dbName,string port, string uid, string password, DatabaseSyntax syntax)
         {
+            databaseSyntax = syntax;
             string cnnString = CreateConnectionString(host,dbName,port,uid,password);
             connectionString = cnnString;
             connection = new MySqlConnection(cnnString);
-            Open();
-        }
-
-        public MySQLConnection(string connectionString)
-        {
-            this.connectionString = connectionString;
-            connection = new MySqlConnection(connectionString);
             Open();
         }
         
@@ -47,8 +42,7 @@ namespace ORM_Framework_DP
         
         protected override string CreateConnectionString(string host, string dbName,string port, string uid, string password)
         {
-            string cnnString = string.Format("Server={0}; Database = {1}; port = {2}; UID = {3}; password={4};", host,dbName,port,uid,password);
-            return cnnString;
+            return databaseSyntax.GetConnectionString(host,dbName,port,uid,password);
         }
 
         private int ExecuteNonQuery(string query)
@@ -176,6 +170,11 @@ namespace ORM_Framework_DP
         public override int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
             return ExecuteNonQuery(query);
+        }
+
+        public override DatabaseSyntax GetDatabaseSyntax()
+        {
+            return databaseSyntax;
         }
     }
 }

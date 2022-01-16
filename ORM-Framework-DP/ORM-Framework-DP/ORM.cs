@@ -40,7 +40,8 @@ namespace ORM_Framework_DP
 
         public SelectQueryBuilder Select()
         {
-            return new MySQLSelectQueryBuilder(dBConnection, attributeHelper.GetTableName());
+            return new SelectQueryBuilder(dBConnection, 
+                attributeHelper.GetTableName(), dBConnection.GetDatabaseSyntax());
         }
     }
 }

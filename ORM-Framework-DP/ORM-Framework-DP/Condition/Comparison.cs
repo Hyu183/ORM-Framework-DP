@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    abstract class Comparison : Condition
+    public abstract class Comparison : Condition
     {
         protected string field { get; set; }
         protected Object value { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class Equal : Comparison
+    public class Equal : Comparison
     {
         public Equal(string a, object b, string aggegrateFunction = "") : base(a, b, aggegrateFunction)
         {

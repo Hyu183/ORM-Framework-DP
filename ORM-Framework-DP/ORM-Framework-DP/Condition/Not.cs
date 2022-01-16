@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class Not : Condition
+    public class Not : Condition
     {
         protected Condition condition;
 
