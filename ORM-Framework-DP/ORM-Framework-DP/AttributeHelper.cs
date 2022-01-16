@@ -16,6 +16,13 @@ namespace ORM_Framework_DP
             return table.TableName;
         }
 
+        public string GetCondition()
+        {
+            Type type = typeof(T);
+            
+            return "";
+        }
+
         public List<string> GetColumnNames()
         {
             Type type = typeof(T);
@@ -78,7 +85,6 @@ namespace ORM_Framework_DP
 
         public List<object> GetColumnValues(T obj)
         {
-            //Dictionary<string, object> values = new Dictionary<string, object>();
             List<object> values = new List<object>();
             List<string> props = GetPropertyNames();
 

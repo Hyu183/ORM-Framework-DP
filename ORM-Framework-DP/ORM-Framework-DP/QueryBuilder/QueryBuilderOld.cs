@@ -7,7 +7,7 @@ namespace ORM_Framework_DP
 {
     public class QueryBuilder
     {
-        private string ConvertValueToString(object value, Type type)
+        public string ConvertValueToString(object value, Type type)
         {
             if(type== typeof(string))
             {
@@ -40,6 +40,20 @@ namespace ORM_Framework_DP
             valuesString = valuesString[0..^1];
             string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2})",tableName,columnNamesString,valuesString);
 
+            return query;
+        }
+
+        public string BuildUpdate(string tableName, List<object> values, string condition)
+        {
+            string valuesString = "";
+
+            foreach (var value in values)
+            {
+                valuesString += ConvertValueToString(value, value.GetType()) + ",";
+            }
+
+            string query = "UPDATE " + tableName + " SET ";
+            query = query.Remove(query.Length - 1, 1) + " WHERE " + condition;
             return query;
         }
     }
