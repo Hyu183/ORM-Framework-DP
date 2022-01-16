@@ -9,7 +9,7 @@ namespace ORM_Framework_DP
     public class InsertQuery<T>: NonQuery<T> where T: new()
     {
         private T obj;
-        public InsertQuery(T obj,DBConnection dBConnection, NonQueryBuilder nonQueryBuilder, AttributeHelper<T> attributeHelper) :base(dBConnection,nonQueryBuilder, attributeHelper) {
+        public InsertQuery(T obj,DBConnection dBConnection, AttributeHelper<T> attributeHelper, DatabaseSyntax databaseSyntax) :base(dBConnection, attributeHelper, databaseSyntax) {
             this.obj = obj;
         }
 
@@ -19,7 +19,7 @@ namespace ORM_Framework_DP
             List<string> columnNames = attributeHelper.GetColumnNames();
             List<object> values = attributeHelper.GetColumnValues(obj);
 
-            string query = nonQueryBuilder.BuildInsert(tableName, columnNames,values);
+            string query = databaseSyntax.BuildInsert(tableName, columnNames,values);
 
             return dBConnection.Insert(query);
         }

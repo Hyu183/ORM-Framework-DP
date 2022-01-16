@@ -22,12 +22,12 @@ namespace ORM_Framework_DP
             this.attributeHelper1 = attributeHelper1;
         }
 
-        public _UpdateQuery(string queryString, DBConnection dBConnection, NonQueryBuilder queryBuilder, AttributeHelper<T> attributeHelper)
-        {
-            this.queryString = queryString;
-            this.dBConnection = dBConnection;
-            this.attributeHelper = attributeHelper;
-        }
+        //public _UpdateQuery(string queryString, DBConnection dBConnection,   AttributeHelper<T> attributeHelper)
+        //{
+        //    this.queryString = queryString;
+        //    this.dBConnection = dBConnection;
+        //    this.attributeHelper = attributeHelper;
+        //}
 
         public int Execute()
         {

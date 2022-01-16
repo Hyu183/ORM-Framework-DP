@@ -12,11 +12,11 @@ namespace ORM_Framework_DP
         private Dictionary<string, object> newValuesMap = new Dictionary<string, object>(); 
         private Condition condition = null;
 
-        public UpdateQuery(T obj,DBConnection dBConnection, NonQueryBuilder nonQueryBuilder, AttributeHelper<T> attributeHelper) :base(dBConnection,nonQueryBuilder, attributeHelper) {
+        public UpdateQuery(T obj,DBConnection dBConnection,  AttributeHelper<T> attributeHelper, DatabaseSyntax databaseSyntax) :base(dBConnection, attributeHelper, databaseSyntax) {
             this.obj = obj;
         }
 
-        public UpdateQuery(DBConnection dBConnection, NonQueryBuilder nonQueryBuilder, AttributeHelper<T> attributeHelper) : base(dBConnection, nonQueryBuilder, attributeHelper)
+        public UpdateQuery(DBConnection dBConnection,  AttributeHelper<T> attributeHelper, DatabaseSyntax databaseSyntax) : base(dBConnection,  attributeHelper, databaseSyntax)
         {
             
         }
@@ -44,9 +44,9 @@ namespace ORM_Framework_DP
                 Dictionary<string, object> primaryKeyValueMap = attributeHelper.GetPrimaryKeyValueMap(obj);
 
 
-                query = nonQueryBuilder.BuildUpdate(tableName, primaryKeyValueMap, newColumnValuesMap );
+                query = databaseSyntax.BuildUpdate(tableName, primaryKeyValueMap, newColumnValuesMap );
             }
-            else { query = nonQueryBuilder.BuildUpdateWithCondition(tableName,  newValuesMap, condition); };
+            else { query = databaseSyntax.BuildUpdateWithCondition(tableName,  newValuesMap, condition); };
 
             return dBConnection.Update(query);
            
