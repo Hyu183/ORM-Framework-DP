@@ -29,7 +29,7 @@ namespace ORM_Framework_DP
             this.attributeHelper = attributeHelper;
         }
 
-        public List<T> Execute()
+        public int Execute()
         {
             Type type = null;
 

@@ -105,9 +105,9 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override List<T> Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
+        public override int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
-            return ExecuteQuery<T>(query, attributeHelper);
+            return ExecuteNonQuery(query);
         }
 
         public override int Select(string query, Type type)
