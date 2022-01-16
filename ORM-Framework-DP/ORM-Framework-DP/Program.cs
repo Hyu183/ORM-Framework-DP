@@ -24,7 +24,7 @@ namespace ORM_Framework_DP
             //orm2.Insert(company1).Execute();
 
             List<Company> companies = orm2.Select().Where("id > 1").GroupBy("name")
-                .Having("count(id) > 2").GetSelectQuery().Execute();
+                .Having("count(id) > 2").GetSelectQuery().Execute<Company>();
 
             foreach (Company company in companies)
             {

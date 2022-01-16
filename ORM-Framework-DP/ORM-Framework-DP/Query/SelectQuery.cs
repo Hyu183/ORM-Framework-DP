@@ -7,37 +7,36 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    public class SelectQuery<T> where T : new()
+    public class SelectQuery
     {
         private string queryString;
         private DBConnection dBConnection;
-        private AttributeHelper<T> attributeHelper;
-        private SelectQueryBuilder<T> queryBuilder;
+        private SelectQueryBuilder queryBuilder;
 
-        public SelectQuery(string queryString, DBConnection dBConnection, AttributeHelper<T> attributeHelper,
-            SelectQueryBuilder<T> selectQueryBuilder)
+        public SelectQuery(string queryString, DBConnection dBConnection,
+            SelectQueryBuilder selectQueryBuilder)
         {
             this.queryString = queryString;
             this.dBConnection = dBConnection;
-            this.attributeHelper = attributeHelper;
             this.queryBuilder = selectQueryBuilder;
         }
 
-        public List<T> Execute()
+        public List<T> Execute<T>() where T : new()
         {
             List<T> result = new List<T>();
+            AttributeHelper<T> attHelper = new AttributeHelper<T>();
             List<Dictionary<string, object>> rowValues = dBConnection.SelectWithoutRelation(queryString);
             foreach (var rowValue in rowValues)
             {
-                T t = attributeHelper.BuildObjectFromValues(rowValue);
-                t = SelectHasMany(attributeHelper.GetHasManyList(), t);
+                T t = attHelper.BuildObjectFromValues(rowValue);
+                t = SelectHasMany(attHelper.GetHasManyList(), t);
                 result.Add(t);
             }
 
             return result;
         }
 
-        public List<T> ExecuteNoRelation()
+        public List<T> ExecuteNoRelation<T>() where T : new()
         {
             List<T> result = new List<T>();
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
@@ -51,8 +50,9 @@ namespace ORM_Framework_DP
             return result;
         }
 
-        private T SelectHasMany(List<HasMany> manyList, T obj)
+        private T SelectHasMany<T>(List<HasMany> manyList, T obj) where T : new()
         {
+            AttributeHelper<T> attHelper = new AttributeHelper<T>();
             foreach (HasMany many in manyList)
             {
                 Dictionary<string, string> valuePairs
@@ -61,7 +61,7 @@ namespace ORM_Framework_DP
                 {
                     string propName = pk.Key;
                     string targetColumeName = pk.Value;
-                    string value = attributeHelper.GetValue(obj, propName).ToString();
+                    string value = attHelper.GetValue(obj, propName).ToString();
                     valuePairs.Add(propName, value);
 
                 }
@@ -70,11 +70,11 @@ namespace ORM_Framework_DP
                 Type manyType = many.propertyInfo.PropertyType;
                 Type itemType = manyType.GetGenericArguments()[0];
 
-                MethodInfo method =
-                typeof(MySQLConnection).GetMethod(nameof(MySQLConnection.SelectNoRelation))
-                    .MakeGenericMethod(itemType);
+                //MethodInfo method =
+                //typeof(MySQLConnection).GetMethod(nameof(MySQLConnection.SelectNoRelation))
+                //    .MakeGenericMethod(itemType);
 
-                SelectQuery selectQuery = new SelectQuery(queryString, dBConnection, null, queryBuilder);
+                SelectQuery selectQuery = new SelectQuery(queryString, dBConnection, queryBuilder);
 
                 MethodInfo method =
                 typeof(SelectQuery).GetMethod(nameof(SelectQuery.ExecuteNoRelation))
@@ -82,7 +82,7 @@ namespace ORM_Framework_DP
 
 
                 many.propertyInfo.SetValue(obj, method
-                    .Invoke(new SelectQuery(queryString, dBConnection, null, queryBuilder), new object[] { manyQuery }));
+                    .Invoke(new SelectQuery(manyQuery, dBConnection, queryBuilder), null));
             }
 
             return obj;

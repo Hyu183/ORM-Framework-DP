@@ -5,10 +5,9 @@ using System.Text;
 
 namespace ORM_Framework_DP
 {
-    class MySQLSelectQueryBuilder<T> : SelectQueryBuilder<T> where T : new()
+    class MySQLSelectQueryBuilder : SelectQueryBuilder
     {
-        public MySQLSelectQueryBuilder(DBConnection db, AttributeHelper<T> attributeHelper) : 
-            base(db, attributeHelper)
+        public MySQLSelectQueryBuilder(DBConnection db, string tableName) : base(db, tableName)
         {
         }
 

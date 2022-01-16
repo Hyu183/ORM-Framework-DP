@@ -33,9 +33,9 @@ namespace ORM_Framework_DP
             throw new NotImplementedException();
         }
 
-        public SelectQueryBuilder<T> Select()
+        public SelectQueryBuilder Select()
         {
-            return new MySQLSelectQueryBuilder<T>(dBConnection, attributeHelper);
+            return new MySQLSelectQueryBuilder(dBConnection, attributeHelper.GetTableName());
         }
     }
 }
