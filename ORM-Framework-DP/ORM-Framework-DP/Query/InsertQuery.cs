@@ -9,7 +9,7 @@ namespace ORM_Framework_DP
     public class InsertQuery<T>: NonQuery<T> where T: new()
     {
         private T obj;
-        public InsertQuery(T obj,DBConnection dBConnection, QueryBuilder queryBuilder, AttributeHelper<T> attributeHelper) :base(  dBConnection,queryBuilder, attributeHelper) {
+        public InsertQuery(T obj,DBConnection dBConnection, QueryBuilder queryBuilder, AttributeHelper<T> attributeHelper) :base(dBConnection,queryBuilder, attributeHelper) {
             this.obj = obj;
         }
 

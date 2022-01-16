@@ -10,7 +10,7 @@ namespace ORM_Framework_DP
         abstract public void Open();
         abstract public void Close();
         abstract public int Insert(string query);
-        abstract public int Update(string query);
+        abstract public List<T> Update<T>(string queryString, Type type, AttributeHelper<T> attributeHelper) where T : new ();
         abstract public int Delete(string query);
         abstract public List<T> Select<T>(string query,Type type, AttributeHelper<T> attributeHelper) where T : new();
         abstract public List<Dictionary<string, object>> SelectWithoutRelation(string query);
