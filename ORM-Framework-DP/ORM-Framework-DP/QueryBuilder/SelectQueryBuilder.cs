@@ -45,10 +45,13 @@ namespace ORM_Framework_DP
 
         public abstract string getQueryString(Dictionary<string, string> featureMap);
 
+        public abstract string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName);
+
         public SelectQuery<T> GetSelectQuery()
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
-            return new SelectQuery<T>(getQueryString(dic), dBConnection, attributeHelper);
+
+            return new SelectQuery<T>(getQueryString(dic), dBConnection, attributeHelper, this);
         }
 
     }

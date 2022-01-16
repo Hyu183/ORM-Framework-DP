@@ -12,6 +12,20 @@ namespace ORM_Framework_DP
         {
         }
 
+        public override string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName)
+        {
+            string query = string.Format("SELECT * FROM {0} WHERE 1", tableName);
+            foreach (var pair in columeNameValuePairs)
+            {
+                query += " AND ";
+                string propName = pair.Key;
+                string value = pair.Value;
+                query += string.Format(" {0}={1} ", propName, value);
+            }
+            query += ";";
+            return query;
+        }
+
         override
         public string getQueryString(Dictionary<string, string> featureMap)
         {
