@@ -22,10 +22,10 @@ namespace ORM_Framework_DP
         {
             Type type = obj.GetType();
             if (type == typeof(string))
-                return "\"" + obj.ToString() + "\"";
+                return "\'" + obj.ToString() + "\'";
             else if (type == typeof(DateTime))
             {
-                return "\"" + ((DateTime)obj).ToString("yyyy-MM-dd HH:mm:ss") + "\"";
+                return "\'" + ((DateTime)obj).ToString("yyyy-MM-dd HH:mm:ss") + "\'";
             }
             return obj.ToString();
         }
