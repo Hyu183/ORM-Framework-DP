@@ -14,9 +14,9 @@ namespace ORM_Framework_DP
         {
             this.condition = condition;
         }
-        public override string parseToSQL(Dictionary<string, string> featureMap)
+        public override string parseToSQL()
         {
-            return "(NOT" + condition.parseToSQL(featureMap) + ")"; 
+            return "(NOT" + condition.parseToSQL() + ")"; 
         }
     }
 }

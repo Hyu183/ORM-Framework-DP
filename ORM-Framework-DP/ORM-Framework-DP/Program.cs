@@ -18,10 +18,13 @@ namespace ORM_Framework_DP
 
 
             //test insert company
-            ORM<Company> orm2 = new ORM<Company>(dBConnection);
-            Company company1 = new Company("Arizona",26000,DateTime.Now);
+            //ORM<Company> orm2 = new ORM<Company>(dBConnection);
+            //Company company1 = new Company("Arizona",26000,DateTime.Now);
 
-            //orm2.Insert(company1).Execute();
+            ////orm2.Insert(company1).Execute();
+
+            List<Company> companies = orm2.Select().Where("id > 1").GroupBy("name")
+               .Having("count(id) > 2").GetSelectQuery().Execute<Company>();
 
             List<Company> companies = orm2.Select().Where("id = 1").GroupBy("name")
                 .GetSelectQuery().Execute<Company>();
@@ -29,14 +32,20 @@ namespace ORM_Framework_DP
             orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
 
 
-            foreach (Company company in companies)
-            {
-                Console.WriteLine(company.Name);
-            }
+            //foreach (Company company in companies)
+            //{
+            //    Console.WriteLine(company.Name);
+            //}
 
             //ORM<TaxCode> ormTaxCode = new ORM<TaxCode>(dBConnection);
             //TaxCode tax = new TaxCode("CFF229");
             //ormTaxCode.Insert(tax).Execute();
+
+            //Condition use
+            Console.WriteLine(Condition.GreaterThan("id", 1).parseToSQL());
+
+            Console.WriteLine(Condition.And(new List<Condition> { Condition.GreaterThan("id", 1), Condition.Equal("name", "Facebook"), Condition.Or(new List<Condition> { Condition.Equal("name", "Facebook"), Condition.Equal("name", "Facebook") }) }).parseToSQL());
+
 
             dBConnection.Close();           
 
