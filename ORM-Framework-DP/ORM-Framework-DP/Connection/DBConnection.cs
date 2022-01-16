@@ -166,7 +166,7 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper) where T : new()
+        public int Update(string query)
         {
             return ExecuteNonQuery(query);
         }

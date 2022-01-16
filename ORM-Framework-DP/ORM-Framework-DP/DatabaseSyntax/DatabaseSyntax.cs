@@ -20,6 +20,11 @@ namespace ORM_Framework_DP
 
         string BuildQuery(string tableName, Condition whereConditon, 
             Condition havingCondition, string[] groupByColumeNames);
-
+        string BuildInsert(string tableName, List<string> columnNames, List<object> values);
+        string BuildDelete(string tableName, Dictionary<string, object> primaryKeyValueMap);
+        string BuildDeleteWithCondition(string tableName, Condition condition);
+        string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap);
+        string BuildUpdateWithCondition(string tableName, Dictionary<string, object> newColumnValuesMap, Condition condition);
+       
     }
 }

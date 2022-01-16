@@ -6,34 +6,50 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    public class UpdateQuery<T> where T : new()
+    public class UpdateQuery<T>: NonQuery<T> where T: new()
     {
-        private string queryString;
-        private DBConnection dBConnection;
-        private AttributeHelper<T> attributeHelper;
-        private Or condition = new Or();
-        private string v;
-        private AttributeHelper<T> attributeHelper1;
+        private T obj;
+        private Dictionary<string, object> newValuesMap = new Dictionary<string, object>(); 
+        private Condition condition = null;
 
-        public UpdateQuery(string v, DBConnection dBConnection, AttributeHelper<T> attributeHelper1)
-        {
-            this.v = v;
-            this.dBConnection = dBConnection;
-            this.attributeHelper1 = attributeHelper1;
+        public UpdateQuery(T obj,DBConnection dBConnection,  AttributeHelper<T> attributeHelper, DatabaseSyntax databaseSyntax) :base(dBConnection, attributeHelper, databaseSyntax) {
+            this.obj = obj;
         }
 
-        public UpdateQuery(string queryString, DBConnection dBConnection, QueryBuilder queryBuilder, AttributeHelper<T> attributeHelper)
+        public UpdateQuery(DBConnection dBConnection,  AttributeHelper<T> attributeHelper, DatabaseSyntax databaseSyntax) : base(dBConnection,  attributeHelper, databaseSyntax)
         {
-            this.queryString = queryString;
-            this.dBConnection = dBConnection;
-            this.attributeHelper = attributeHelper;
+            
         }
 
-        public int Execute()
+        public UpdateQuery<T> Set(string colName, object newValue)
         {
-            Type type = null;
+            newValuesMap.Add(colName, newValue);
+            return this;
+        }
 
-            return dBConnection.Update<T>(queryString, type, attributeHelper);
+        public UpdateQuery<T> Where(Condition condition)
+        {
+            this.condition = condition;
+            return this;
+        }
+
+        public override int Execute()
+        {          
+            string tableName = attributeHelper.GetTableName();        
+            
+            string query = "";
+            if (condition == null)
+            {
+                Dictionary<string, object> newColumnValuesMap = attributeHelper.GetColumnValueMap(obj);
+                Dictionary<string, object> primaryKeyValueMap = attributeHelper.GetPrimaryKeyValueMap(obj);
+
+
+                query = databaseSyntax.BuildUpdate(tableName, primaryKeyValueMap, newColumnValuesMap );
+            }
+            else { query = databaseSyntax.BuildUpdateWithCondition(tableName,  newValuesMap, condition); };
+
+            return dBConnection.Update(query);
+           
         }
     }
 }

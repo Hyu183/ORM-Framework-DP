@@ -44,11 +44,30 @@ namespace ORM_Framework_DP
             return columnNames;
         }
 
-        public List<string> GetPrimaryKeyNames()
+        //public List<string> GetPrimaryKeyNames()
+        //{
+        //    Type type = typeof(T);
+        //    var props = type.GetProperties();
+        //    List<string> primaryKeyNames = new List<string>();
+        //    foreach (var p in props)
+        //    {
+
+        //        PrimaryKey pKey = p.GetCustomAttribute<PrimaryKey>();
+        //        if (pKey == null)
+        //        {
+        //            continue;
+        //        };
+
+        //        primaryKeyNames.Add(pKey.PrimaryKeyName);
+        //    }
+
+        //    return primaryKeyNames;
+        //}
+        public Dictionary<string,object> GetPrimaryKeyValueMap(T obj)
         {
             Type type = typeof(T);
             var props = type.GetProperties();
-            List<string> primaryKeyNames = new List<string>();
+            Dictionary<string, object> primaryKeyValueMap = new Dictionary<string, object>();
             foreach (var p in props)
             {
 
@@ -56,13 +75,14 @@ namespace ORM_Framework_DP
                 if (pKey == null)
                 {
                     continue;
-                };
+                };               
 
-                primaryKeyNames.Add(pKey.PrimaryKeyName);
+                primaryKeyValueMap.Add(pKey.PrimaryKeyName, p.GetValue(obj));
             }
 
-            return primaryKeyNames;
+            return primaryKeyValueMap;
         }
+
 
         public List<string> GetPropertyNames()
         {
@@ -98,6 +118,24 @@ namespace ORM_Framework_DP
 
 
             return values;
+        }
+
+        public Dictionary<string,object> GetColumnValueMap(T obj)
+        {
+            Dictionary<string, object> valuesMap = new Dictionary<string, object>();
+            //List<object> values = new List<object>();
+            List<string> props = GetPropertyNames();
+            List<string> colNames = GetColumnNames();
+            int currrentColIndex = 0;
+
+            foreach (var p in props)
+            {
+                object objectValue = GetValue(obj, p);
+                valuesMap.Add(colNames[currrentColIndex++], objectValue);
+            }
+
+
+            return valuesMap;
         }
 
         public T DataToObject(List<string> data) 
