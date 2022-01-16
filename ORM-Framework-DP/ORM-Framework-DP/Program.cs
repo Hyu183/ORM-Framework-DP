@@ -26,7 +26,7 @@ namespace ORM_Framework_DP
             List<Company> companies = orm2.Select().Where("id = 1").GroupBy("name")
                 .GetSelectQuery().Execute<Company>();
 
-            //orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
+            orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
 
 
             foreach (Company company in companies)

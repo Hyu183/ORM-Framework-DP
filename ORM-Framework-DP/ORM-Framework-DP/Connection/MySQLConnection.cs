@@ -158,7 +158,7 @@ namespace ORM_Framework_DP
                 }
                 rowValues.Add(columeNameValuePairs);
             }
-            Close();
+            r.Close();
 
             return rowValues;
         }
