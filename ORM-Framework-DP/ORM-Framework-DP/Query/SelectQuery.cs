@@ -11,14 +11,14 @@ namespace ORM_Framework_DP
     {
         private string queryString;
         private DBConnection dBConnection;
-        private SelectQueryBuilder queryBuilder;
+        private DatabaseSyntax databaseSyntax;
 
         public SelectQuery(string queryString, DBConnection dBConnection,
-            SelectQueryBuilder selectQueryBuilder)
+            DatabaseSyntax databaseSyntax)
         {
             this.queryString = queryString;
             this.dBConnection = dBConnection;
-            this.queryBuilder = selectQueryBuilder;
+            this.databaseSyntax = databaseSyntax;
         }
 
         public List<T> Execute<T>() where T : new()
@@ -82,7 +82,7 @@ namespace ORM_Framework_DP
                     valuePairs.Add(targetColumeName, value);
 
                 }
-                string oneQuery = queryBuilder.BuildSelectWhereFromValuePairs(valuePairs, one.TableName);
+                string oneQuery = databaseSyntax.BuildSelectWhereFromValuePairs(valuePairs, one.TableName);
 
                 //Type itemType = one.propertyInfo.PropertyType;
                 Type itemType = calculateItemType(one.propertyInfo.PropertyType);
@@ -92,7 +92,7 @@ namespace ORM_Framework_DP
                     .MakeGenericMethod(itemType);
 
                 one.propertyInfo.SetValue(obj, method
-                    .Invoke(new SelectQuery(oneQuery, dBConnection, queryBuilder), null));
+                    .Invoke(new SelectQuery(oneQuery, dBConnection, databaseSyntax), null));
             }
 
             return obj;
