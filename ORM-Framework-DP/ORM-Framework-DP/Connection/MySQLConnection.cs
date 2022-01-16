@@ -177,10 +177,5 @@ namespace ORM_Framework_DP
         {
             return ExecuteNonQuery(query);
         }
-
-        public override int Select(string query, Type type)
-        {
-            return new MySQLConnection(connectionString);
-        }
     }
 }
