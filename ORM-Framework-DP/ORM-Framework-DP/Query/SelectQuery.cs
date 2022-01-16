@@ -29,8 +29,10 @@ namespace ORM_Framework_DP
             foreach (var rowValue in rowValues)
             {
                 T t = attHelper.BuildObjectFromValues(rowValue);
-                t = SelectHasMany(attHelper.GetHasNList(typeof(HasMany)), t);
-                t = SelectHasOne(attHelper.GetHasNList(typeof(HasOne)), t);
+                t = SelectHasN(attHelper.GetHasNList(typeof(HasMany)), t, nameof(SelectQuery.ExecuteNoRelation),
+                    (nType) => nType.GetGenericArguments()[0]);
+                t = SelectHasN(attHelper.GetHasNList(typeof(HasOne)), t, nameof(SelectQuery.ExecuteGetOne),
+                    (nType) => nType);
                 result.Add(t);
             }
 
@@ -51,41 +53,6 @@ namespace ORM_Framework_DP
             return result;
         }
 
-        private T SelectHasMany<T>(List<HasN> manyList, T obj) where T : new()
-        {
-            AttributeHelper<T> attHelper = new AttributeHelper<T>();
-            foreach (HasN many in manyList)
-            {
-                Dictionary<string, string> valuePairs
-                    = new Dictionary<string, string>();
-                foreach (var pk in many.PKPairsDic)
-                {
-                    string propName = pk.Key;
-                    string targetColumeName = pk.Value;
-                    string value = attHelper.GetValue(obj, propName).ToString();
-                    valuePairs.Add(targetColumeName, value);
-
-                }
-                string manyQuery = queryBuilder.BuildSelectWhereFromValuePairs(valuePairs, many.TableName);
-
-                Type manyType = many.propertyInfo.PropertyType;
-                Type itemType = manyType.GetGenericArguments()[0];
-
-                //MethodInfo method =
-                //typeof(MySQLConnection).GetMethod(nameof(MySQLConnection.SelectNoRelation))
-                //    .MakeGenericMethod(itemType);
-
-                MethodInfo method =
-                typeof(SelectQuery).GetMethod(nameof(SelectQuery.ExecuteNoRelation))
-                    .MakeGenericMethod(itemType);
-
-
-                many.propertyInfo.SetValue(obj, method
-                    .Invoke(new SelectQuery(manyQuery, dBConnection, queryBuilder), null));
-            }
-
-            return obj;
-        }
 
         public T ExecuteGetOne<T>() where T : new()
         {
@@ -100,7 +67,7 @@ namespace ORM_Framework_DP
             return new T();
         }
 
-        private T SelectHasOne<T>(List<HasN> oneList, T obj) where T : new()
+        private T SelectHasN<T>(List<HasN> oneList, T obj, string methodString, Func<Type, Type> calculateItemType) where T : new()
         {
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
             foreach (HasN one in oneList)
@@ -117,10 +84,11 @@ namespace ORM_Framework_DP
                 }
                 string oneQuery = queryBuilder.BuildSelectWhereFromValuePairs(valuePairs, one.TableName);
 
-                Type itemType = one.propertyInfo.PropertyType;
+                //Type itemType = one.propertyInfo.PropertyType;
+                Type itemType = calculateItemType(one.propertyInfo.PropertyType);
 
                 MethodInfo method =
-                typeof(SelectQuery).GetMethod(nameof(SelectQuery.ExecuteGetOne))
+                typeof(SelectQuery).GetMethod(methodString)
                     .MakeGenericMethod(itemType);
 
                 one.propertyInfo.SetValue(obj, method
