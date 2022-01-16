@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -70,6 +71,8 @@ namespace ORM_Framework_DP
             List<string> propNames = new List<string>();
             foreach (var p in props)
             {
+                
+                if (typeof(ICollection).IsAssignableFrom(p.PropertyType)) continue;
                 propNames.Add(p.Name);
             }
 
@@ -90,6 +93,7 @@ namespace ORM_Framework_DP
 
             foreach(var col in props)
             {
+                
                 object objectValue = GetValue(obj, col);
                 values.Add(objectValue);
             }
