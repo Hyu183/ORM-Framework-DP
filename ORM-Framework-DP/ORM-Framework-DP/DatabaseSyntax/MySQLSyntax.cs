@@ -25,7 +25,7 @@ namespace ORM_Framework_DP
 
             if (havingCondition != null)
             {
-                query += " " + GetWherePart(havingCondition);
+                query += " " + GetHavingPart(havingCondition);
             }
 
             query += ";";

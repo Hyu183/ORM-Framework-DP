@@ -24,8 +24,10 @@ namespace ORM_Framework_DP
 
             ////orm2.Insert(company1).Execute();
 
-            List<Company> companies = orm2.Select().Where(Condition.Equal("id", 1))
-               .GetSelectQuery().Execute<Company>();
+            List<Company> companies = orm2.Select().Where(Condition.GreaterThan("id", 0))
+                .GroupBy("tax_code_id")
+                .Having(Condition.GreaterThan("name", 1, "COUNT"))
+                .GetSelectQuery().Execute<Company>();
 
             //orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
 

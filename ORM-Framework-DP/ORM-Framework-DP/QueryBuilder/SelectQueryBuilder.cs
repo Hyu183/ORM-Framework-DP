@@ -44,7 +44,7 @@ namespace ORM_Framework_DP
             return this;
         }
 
-        public string getQueryString()
+        private string getQueryString()
         {
             return databaseSyntax.BuildQuery(tableName, whereCondition, havingCondition, groupBy);
         }
