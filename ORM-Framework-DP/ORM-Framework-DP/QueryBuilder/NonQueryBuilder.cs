@@ -13,7 +13,8 @@ namespace ORM_Framework_DP
        
         public abstract string BuildDelete(string tableName, List<string> columnNames, List<object> values);
         
-        public abstract string BuildUpdate(string tableName, List<object> values, string condition);
-       
+        public abstract string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string,object> newColumnValuesMap);
+        public abstract string BuildUpdateWithCondition(string tableName, Dictionary<string, object> newColumnValuesMap, Condition condition);
+
     }
 }

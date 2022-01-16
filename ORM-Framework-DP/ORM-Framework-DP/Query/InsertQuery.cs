@@ -19,7 +19,7 @@ namespace ORM_Framework_DP
             List<string> columnNames = attributeHelper.GetColumnNames();
             List<object> values = attributeHelper.GetColumnValues(obj);
 
-            string query = queryBuilder.BuildInsert(tableName, columnNames,values);
+            string query = nonQueryBuilder.BuildInsert(tableName, columnNames,values);
 
             return dBConnection.Insert(query);
         }

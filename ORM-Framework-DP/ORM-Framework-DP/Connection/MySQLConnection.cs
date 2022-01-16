@@ -173,7 +173,7 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
+        public override int Update(string query)
         {
             return ExecuteNonQuery(query);
         }

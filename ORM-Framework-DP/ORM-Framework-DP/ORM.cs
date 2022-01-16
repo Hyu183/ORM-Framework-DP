@@ -23,9 +23,16 @@ namespace ORM_Framework_DP
             return new InsertQuery<T>(obj,dBConnection, nonQueryBuilder, attributeHelper);
         }
 
-        public UpdateQueryBuilder<T> Update(T obj)
+        public UpdateQuery<T> Update(T obj)
         {
-            return new MySQLUpdateQueryBuilder<T>(dBConnection, attributeHelper);
+            return new UpdateQuery<T>(obj, dBConnection, nonQueryBuilder, attributeHelper);
+            //return new MySQLUpdateQueryBuilder<T>(dBConnection, attributeHelper);
+        }
+
+        public UpdateQuery<T> Update()
+        {
+            return new UpdateQuery<T>( dBConnection, nonQueryBuilder, attributeHelper);
+            //return new MySQLUpdateQueryBuilder<T>(dBConnection, attributeHelper);
         }
 
         public DeleteQueryNonQuery<T> Delete(T obj)

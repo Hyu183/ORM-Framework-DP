@@ -39,10 +39,10 @@ namespace ORM_Framework_DP
 
         public abstract string getQueryString(Dictionary<string, string> featureMap);
 
-        public UpdateQuery<T> GetUpdateQuery()
+        public _UpdateQuery<T> GetUpdateQuery()
         {
             Dictionary<string, string> values = new Dictionary<string, string>();
-            return new UpdateQuery<T>(getQueryString(values), dBConnection, attributeHelper);
+            return new _UpdateQuery<T>(getQueryString(values), dBConnection, attributeHelper);
         }
 
     }

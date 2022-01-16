@@ -70,17 +70,50 @@ namespace ORM_Framework_DP
             return query;
         }
 
-        public override string BuildUpdate(string tableName, List<object> values, string condition)
+
+        public override string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap)
         {
-            string valuesString = "";
+            string query = "UPDATE " + tableName + " SET ";           
 
-            foreach (var value in values)
-            {
-                valuesString += ConvertValueToString(value, value.GetType()) + ",";
-            }
+                
 
+                List<Condition> _condition = new List<Condition>();
+
+                foreach (var key in primaryKeyValueMap.Keys)
+                {
+                    if (newColumnValuesMap.ContainsKey(key))
+                        newColumnValuesMap.Remove(key);
+                    _condition.Add(Condition.Equal(key, primaryKeyValueMap[key]));
+                }
+
+                Condition condition = Condition.And(_condition);
+
+                foreach(var col in newColumnValuesMap.Keys)
+                {
+                    query += string.Format(" {0} = {1},", col, ConvertValueToString(newColumnValuesMap[col], newColumnValuesMap[col].GetType()));
+                }
+                query = query[0..^1];
+
+                query += " WHERE " + condition.parseToSQL();
+
+
+                return query;
+                
+            
+        }
+
+        public override string BuildUpdateWithCondition(string tableName, Dictionary<string, object> newColumnValuesMap, Condition condition) {
             string query = "UPDATE " + tableName + " SET ";
-            query = query.Remove(query.Length - 1, 1) + " WHERE " + condition;
+           
+
+            foreach (var col in newColumnValuesMap.Keys)
+            {
+                query += string.Format(" {0} = {1},", col, ConvertValueToString(newColumnValuesMap[col], newColumnValuesMap[col].GetType()));
+            }
+            query = query[0..^1];
+
+            query += " WHERE " + condition.parseToSQL();
+
             return query;
         }
     }
