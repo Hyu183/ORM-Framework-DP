@@ -28,9 +28,14 @@ namespace ORM_Framework_DP
             throw new NotImplementedException();
         }
 
-        public DeleteQuery<T> Delete(T obj)
+        public DeleteQueryNonQuery<T> Delete(T obj)
         {
-            return new DeleteQuery<T>(obj, dBConnection, queryBuilder, attributeHelper);
+            return new DeleteQueryNonQuery<T>(obj, dBConnection, queryBuilder, attributeHelper);
+        }
+
+        public DeleteQueryBuilder<T> Delete()
+        {
+            return new MySQLDeleteQueryBuilder<T>(dBConnection, attributeHelper);
         }
 
         public object Select()

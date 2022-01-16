@@ -20,7 +20,11 @@ namespace ORM_Framework_DP
             //test insert company
             ORM<Company> orm2 = new ORM<Company>(dBConnection);
             Company company1 = new Company("Meta",20000,DateTime.Now);
+            Company company11 = new Company("Arizona", 26000, DateTime.Now);
             orm2.Insert(company1).Execute();
+            orm2.Insert(company11).Execute();
+            orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
+
 
             //orm2.Delete().Where();
 

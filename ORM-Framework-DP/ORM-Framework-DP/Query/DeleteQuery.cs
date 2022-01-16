@@ -1,23 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    public class DeleteQuery<T> : NonQuery<T> where T : new()
+    public class DeleteQuery<T> where T : new()
     {
-        private T obj;
-        public DeleteQuery(T obj, DBConnection dBConnection, QueryBuilder queryBuilder, AttributeHelper<T> attributeHelper) : base(dBConnection, queryBuilder, attributeHelper)
+        private DBConnection dBConnection;
+        private Or condition = new Or();
+        private string v;
+        private AttributeHelper<T> attributeHelper1;
+
+        public DeleteQuery(string v, DBConnection dBConnection, AttributeHelper<T> attributeHelper1)
         {
-            this.obj = obj;
+            this.v = v;
+            this.dBConnection = dBConnection;
+            this.attributeHelper1 = attributeHelper1;
         }
-        public override int Execute()
+
+        public int Execute()
         {
-            string tableName = attributeHelper.GetTableName();
-            List<string> columnNames = attributeHelper.GetColumnNames();
-            List<object> values = attributeHelper.GetColumnValues(obj);
-
-            string query = queryBuilder.BuildDelete(tableName, columnNames, values);
-
-            return dBConnection.Delete(query);
+            Type type = null;
+            return dBConnection.Delete(v);
         }
     }
 }
