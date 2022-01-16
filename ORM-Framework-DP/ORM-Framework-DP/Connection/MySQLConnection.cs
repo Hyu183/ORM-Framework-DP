@@ -173,19 +173,12 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override int Update(string query)
+        public override int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
             return ExecuteNonQuery(query);
         }
 
-        public override List<T> Select<T>(string query, Type type, AttributeHelper<T> attributeHelper)
-        {
-            //return ExecuteQuery<T>(query, attributeHelper);
-            return null;
-
-        }
-
-        public override DBConnection clone()
+        public override int Select(string query, Type type)
         {
             return new MySQLConnection(connectionString);
         }
