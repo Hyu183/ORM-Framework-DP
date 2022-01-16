@@ -35,7 +35,7 @@ namespace ORM_Framework_DP
             //Condition use
             Console.WriteLine(Condition.GreaterThan("id", 1).parseToSQL());
 
-            Console.WriteLine(Condition.And(new List<Condition> { Condition.GreaterThan("id", 1), Condition.Equal("name", "Facebook") }).parseToSQL());
+            Console.WriteLine(Condition.And(new List<Condition> { Condition.GreaterThan("id", 1), Condition.Equal("name", "Facebook"), Condition.Or(new List<Condition> { Condition.Equal("name", "Facebook"), Condition.Equal("name", "Facebook") }) }).parseToSQL());
 
 
             //dBConnection.Close();           

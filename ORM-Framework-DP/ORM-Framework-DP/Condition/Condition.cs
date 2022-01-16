@@ -17,9 +17,9 @@ namespace ORM_Framework_DP
         {
             return new And();
         }
-        public static Or Or(Condition a, Condition b)
+        public static Or Or(List<Condition> conditions)
         {
-            return new Or(a, b);
+            return new Or(conditions);
         }
         public static Or Or()
         {
