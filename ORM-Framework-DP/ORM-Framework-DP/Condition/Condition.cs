@@ -8,18 +8,18 @@ namespace ORM_Framework_DP
 {
     abstract class Condition
     {
-        public abstract string parseToSQL(Dictionary<string, string> featureMap);
-        public static And And(Condition a, Condition b)
+        public abstract string parseToSQL();
+        public static And And(List<Condition> conditions)
         {
-            return new And(a, b);
+            return new And(conditions);
         }
         public static And And()
         {
             return new And();
         }
-        public static Or Or(Condition a, Condition b)
+        public static Or Or(List<Condition> conditions)
         {
-            return new Or(a, b);
+            return new Or(conditions);
         }
         public static Or Or()
         {
