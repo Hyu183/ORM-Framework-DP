@@ -158,7 +158,7 @@ namespace ORM_Framework_DP
                 }
                 rowValues.Add(columeNameValuePairs);
             }
-            Close();
+            r.Close();
 
             return rowValues;
         }
@@ -173,21 +173,9 @@ namespace ORM_Framework_DP
             return ExecuteNonQuery(query);
         }
 
-        public override int Update(string query)
+        public override int Update<T>(string query, Type type, AttributeHelper<T> attributeHelper)
         {
             return ExecuteNonQuery(query);
-        }
-
-        public override List<T> Select<T>(string query, Type type, AttributeHelper<T> attributeHelper)
-        {
-            //return ExecuteQuery<T>(query, attributeHelper);
-            return null;
-
-        }
-
-        public override DBConnection clone()
-        {
-            return new MySQLConnection(connectionString);
         }
     }
 }

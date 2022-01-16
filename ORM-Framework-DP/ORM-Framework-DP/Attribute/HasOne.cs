@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    public class HasMany : HasN
+    public class HasOne : HasN
     {
-        public HasMany(string tableName, params string[] pKPairs) : base(tableName, pKPairs)
+        public HasOne(string tableName, params string[] pKPairs) : base(tableName, pKPairs)
         {
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,13 @@ namespace ORM_Framework_DP
             Type type = typeof(T);
             Table table = (Table)type.GetCustomAttributes(typeof(Table), false)[0];
             return table.TableName;
+        }
+
+        public string GetCondition()
+        {
+            Type type = typeof(T);
+            
+            return "";
         }
 
         public List<string> GetColumnNames()
@@ -63,6 +71,7 @@ namespace ORM_Framework_DP
             List<string> propNames = new List<string>();
             foreach (var p in props)
             {
+                if (typeof(ICollection).IsAssignableFrom(p.PropertyType)|| p.GetCustomAttribute<HasOne>() !=null ) continue;
                 propNames.Add(p.Name);
             }
 
@@ -78,7 +87,6 @@ namespace ORM_Framework_DP
 
         public List<object> GetColumnValues(T obj)
         {
-            //Dictionary<string, object> values = new Dictionary<string, object>();
             List<object> values = new List<object>();
             List<string> props = GetPropertyNames();
 
@@ -107,36 +115,39 @@ namespace ORM_Framework_DP
             return obj;
         }
 
-        public List<HasMany> GetHasManyList()
+        public List<HasN> GetHasNList(Type typeHas)
         {
             Type type = typeof(T);
             var props = type.GetProperties();
 
-            List<HasMany> listHasMany = new List<HasMany>();
+            List<HasN> listHasN = new List<HasN>();
 
             foreach (var p in props)
             {
-                HasMany hasMany = p.GetCustomAttribute<HasMany>();
-                if (hasMany == null)
+                HasN hasN = p.GetCustomAttribute<HasN>();
+                if (hasN == null)
+                {
+                    continue;
+                } else if (hasN.GetType() != typeHas)
                 {
                     continue;
                 };
-                string[] pKPairs = hasMany.PKPairs;
+                string[] pKPairs = hasN.PKPairs;
                 Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
-                
-                foreach(string k in pKPairs)
+
+                foreach (string k in pKPairs)
                 {
                     string[] keys = k.Split('=');
                     PKPairsDic.Add(keys[0], keys[1]);
                 }
-                hasMany.PKPairsDic = PKPairsDic;
+                hasN.PKPairsDic = PKPairsDic;
 
-                hasMany.propertyInfo = p;
-                listHasMany.Add(hasMany);
+                hasN.propertyInfo = p;
+                listHasN.Add(hasN);
 
             }
 
-            return listHasMany;
+            return listHasN;
         }
 
         private string getColumeNameFromPropertyName(string propName)

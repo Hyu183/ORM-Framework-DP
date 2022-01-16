@@ -31,16 +31,11 @@ namespace ORM_Framework_DP
             string query = "";
 
             query += string.Format("SELECT * FROM {0}", this.tableName);
-            //if (this.condition != null)
-            //{
-            //    query += string.format(" where {0}", this.condition.parsetosql(featuremap));
-            //}
 
             if (!string.IsNullOrEmpty(this.condition))
             {
                 query += string.Format(" WHERE {0}", this.condition);
             }
-
 
             if (!string.IsNullOrEmpty(this.groupBy))
             {

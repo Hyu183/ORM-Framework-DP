@@ -29,7 +29,10 @@ namespace ORM_Framework_DP
             foreach (var rowValue in rowValues)
             {
                 T t = attHelper.BuildObjectFromValues(rowValue);
-                t = SelectHasMany(attHelper.GetHasManyList(), t);
+                t = SelectHasN(attHelper.GetHasNList(typeof(HasMany)), t, nameof(SelectQuery.ExecuteNoRelation),
+                    (nType) => nType.GetGenericArguments()[0]);
+                t = SelectHasN(attHelper.GetHasNList(typeof(HasOne)), t, nameof(SelectQuery.ExecuteGetOne),
+                    (nType) => nType);
                 result.Add(t);
             }
 
@@ -50,39 +53,46 @@ namespace ORM_Framework_DP
             return result;
         }
 
-        private T SelectHasMany<T>(List<HasMany> manyList, T obj) where T : new()
+
+        public T ExecuteGetOne<T>() where T : new()
         {
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
-            foreach (HasMany many in manyList)
+            List<Dictionary<string, object>> rowValues = dBConnection.SelectWithoutRelation(queryString);
+            foreach (var rowValue in rowValues)
+            {
+                T t = attHelper.BuildObjectFromValues(rowValue);
+                return t;
+            }
+
+            return new T();
+        }
+
+        private T SelectHasN<T>(List<HasN> oneList, T obj, string methodString, Func<Type, Type> calculateItemType) where T : new()
+        {
+            AttributeHelper<T> attHelper = new AttributeHelper<T>();
+            foreach (HasN one in oneList)
             {
                 Dictionary<string, string> valuePairs
                     = new Dictionary<string, string>();
-                foreach (var pk in many.PKPairsDic)
+                foreach (var pk in one.PKPairsDic)
                 {
                     string propName = pk.Key;
                     string targetColumeName = pk.Value;
                     string value = attHelper.GetValue(obj, propName).ToString();
-                    valuePairs.Add(propName, value);
+                    valuePairs.Add(targetColumeName, value);
 
                 }
-                string manyQuery = queryBuilder.BuildSelectWhereFromValuePairs(valuePairs, many.TableName);
+                string oneQuery = queryBuilder.BuildSelectWhereFromValuePairs(valuePairs, one.TableName);
 
-                Type manyType = many.propertyInfo.PropertyType;
-                Type itemType = manyType.GetGenericArguments()[0];
-
-                //MethodInfo method =
-                //typeof(MySQLConnection).GetMethod(nameof(MySQLConnection.SelectNoRelation))
-                //    .MakeGenericMethod(itemType);
-
-                SelectQuery selectQuery = new SelectQuery(queryString, dBConnection, queryBuilder);
+                //Type itemType = one.propertyInfo.PropertyType;
+                Type itemType = calculateItemType(one.propertyInfo.PropertyType);
 
                 MethodInfo method =
-                typeof(SelectQuery).GetMethod(nameof(SelectQuery.ExecuteNoRelation))
+                typeof(SelectQuery).GetMethod(methodString)
                     .MakeGenericMethod(itemType);
 
-
-                many.propertyInfo.SetValue(obj, method
-                    .Invoke(new SelectQuery(manyQuery, dBConnection, queryBuilder), null));
+                one.propertyInfo.SetValue(obj, method
+                    .Invoke(new SelectQuery(oneQuery, dBConnection, queryBuilder), null));
             }
 
             return obj;
