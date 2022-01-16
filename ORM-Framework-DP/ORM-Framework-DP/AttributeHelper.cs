@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -70,6 +71,7 @@ namespace ORM_Framework_DP
             List<string> propNames = new List<string>();
             foreach (var p in props)
             {
+                if (typeof(ICollection).IsAssignableFrom(p.PropertyType)|| p.GetCustomAttribute<HasOne>() !=null ) continue;
                 propNames.Add(p.Name);
             }
 
