@@ -29,18 +29,13 @@ namespace ORM_Framework_DP
             }
             return obj.ToString();
         }
-        public override string parseToSQL(Dictionary<string, string> featureMap)
+        public override string parseToSQL()
         {
-            if (featureMap.ContainsKey(field) == false)
-            {
-                throw new Exception("No \"" + field + "\" attribute in class");
-            }
-            string attr = featureMap[field];
             if (aggegrateFunction.Length != 0)
             {
-                attr = aggegrateFunction + "(" + attr + ")";
+                field = aggegrateFunction + "(" + field + ")";
             }
-            return attr + getComparisonOperator() + parseToString(value);
+            return field + getComparisonOperator() + parseToString(value);
         }
     }
 }

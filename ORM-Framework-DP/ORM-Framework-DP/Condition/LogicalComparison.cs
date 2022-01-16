@@ -11,17 +11,21 @@ namespace ORM_Framework_DP
         protected List<Condition> conditions;
 
         public abstract string getLogic();
-        public override string parseToSQL(Dictionary<string, string> featureMap)
+        public override string parseToSQL()
         {
             string opt = getLogic();
             if (conditions.Count == 0)
             {
                 return "";
             }
-            string res = conditions[0].parseToSQL(featureMap);
+            if (conditions.Count == 1)
+            {
+                return conditions[0].parseToSQL();
+            }
+            string res = conditions[0].parseToSQL();
             for (int i = 1; i < conditions.Count; i++)
             {
-                res += " " + opt + " " + conditions[i].parseToSQL(featureMap);
+                res += " " + opt + " " + conditions[i].parseToSQL();
             }
             res = "(" + res + ")";
             return res;
