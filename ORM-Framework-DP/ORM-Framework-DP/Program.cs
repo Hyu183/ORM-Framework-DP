@@ -23,14 +23,17 @@ namespace ORM_Framework_DP
 
             //orm2.Insert(company1).Execute();
 
-            List<Company> companies = orm2.Select().Where("id > 1").GroupBy("name")
-                .Having("count(id) > 2").GetSelectQuery().Execute<Company>();
+            List<Company> companies = orm2.Select().Where("id = 1").GroupBy("name")
+                .GetSelectQuery().Execute<Company>();
 
             foreach (Company company in companies)
             {
                 Console.WriteLine(company.Name);
             }
 
+            //ORM<TaxCode> ormTaxCode = new ORM<TaxCode>(dBConnection);
+            //TaxCode tax = new TaxCode("CFF229");
+            //ormTaxCode.Insert(tax).Execute();
 
             dBConnection.Close();           
 

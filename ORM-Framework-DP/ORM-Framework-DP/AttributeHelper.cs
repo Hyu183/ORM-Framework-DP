@@ -139,6 +139,38 @@ namespace ORM_Framework_DP
             return listHasMany;
         }
 
+        public List<HasOne> GetHasOneList()
+        {
+            Type type = typeof(T);
+            var props = type.GetProperties();
+
+            List<HasOne> listHasMany = new List<HasOne>();
+
+            foreach (var p in props)
+            {
+                HasOne hasMany = p.GetCustomAttribute<HasOne>();
+                if (hasMany == null)
+                {
+                    continue;
+                };
+                string[] pKPairs = hasMany.PKPairs;
+                Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
+
+                foreach (string k in pKPairs)
+                {
+                    string[] keys = k.Split('=');
+                    PKPairsDic.Add(keys[0], keys[1]);
+                }
+                hasMany.PKPairsDic = PKPairsDic;
+
+                hasMany.propertyInfo = p;
+                listHasMany.Add(hasMany);
+
+            }
+
+            return listHasMany;
+        }
+
         private string getColumeNameFromPropertyName(string propName)
         {
             Type type = typeof(T);
