@@ -10,8 +10,7 @@ namespace ORM_Framework_DP
     {
         static void Main(string[] args)
         {
-            DatabaseSyntax databaseSyntax = new MySQLSyntax();
-            DBConnection dBConnection = new DBConnection("localhost", "company", "3360", "root", "root", databaseSyntax);
+            DBConnection dBConnection = new MySQLConnection("localhost", "company", "3360", "root", "root");
 
             ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
             Employee e = new Employee(7,"no name","female",20,1000,1);
@@ -26,7 +25,7 @@ namespace ORM_Framework_DP
             //orm1.Update().Set("sex", "male").Where(Condition.Equal("id", 7)).Execute();
 
             //test insert company
-            //ORM<Company> orm2 = new ORM<Company>(dBConnection);
+            ORM<Company> orm2 = new ORM<Company>(dBConnection);
             //Company company1 = new Company(5,"Run now", 26000, DateTime.Now,2);
 
             //orm2.Insert(company1).Execute();
@@ -62,12 +61,6 @@ namespace ORM_Framework_DP
 
 
             dBConnection.Close();
-
-
-
-            
-
-  
         }
     }
 }

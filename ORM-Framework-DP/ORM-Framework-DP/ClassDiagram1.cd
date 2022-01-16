@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ORM_Framework_DP.DBConnection" Collapsed="true">
+  <Class Name="ORM_Framework_DP.MySQLConnection" Collapsed="true">
     <Position X="6.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DBConnection.cs</FileName>
+      <HashCode>AAQAFEAAAAAAIAgAAAABAEAAEAEAAAAAAAAAAgCAAAA=</HashCode>
+      <FileName>Connection\MySQLConnection.cs</FileName>
+      <NewMemberFileName>Connection\DBConnection.cs</NewMemberFileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="ORM_Framework_DP.MySQLConnection" Collapsed="true">
     <Position X="6" Y="2.25" Width="1.5" />
@@ -17,15 +19,15 @@
   <Class Name="ORM_Framework_DP.ORM&lt;T&gt;">
     <Position X="2.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAEAAAAAAAAAAAAAAAAAAAAEgAAEAAAAAQAAAAAA=</HashCode>
+      <HashCode>AAQAAEAAAAAAAAAAAACAAAAAAAEgAAAAAAAAQAAAAAA=</HashCode>
       <FileName>ORM.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ORM_Framework_DP.QueryBuilder">
     <Position X="4.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>QueryBuilder.cs</FileName>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAMAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QueryBuilder\QueryBuilderOld.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ORM_Framework_DP.Query">
@@ -38,7 +40,7 @@
   <Class Name="ORM_Framework_DP.AttributeHelper&lt;T&gt;">
     <Position X="1.75" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAIAAAAAAAACAAAAAAAAAAAAAAAAECgAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAIAIAAAAQACAAAAECAAAAAAAAABECgAAAAAA=</HashCode>
       <FileName>AttributeHelper.cs</FileName>
     </TypeIdentifier>
   </Class>

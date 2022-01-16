@@ -10,17 +10,19 @@
   <Class Name="ORM_Framework_DP.MySQLSyntax">
     <Position X="4.25" Y="1" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAABAAAABAAAAAAAggEICAAAAAAAEAAAAAgAA=</HashCode>
+      <HashCode>AAAAAIAAQBAAAABAAAAAAAggMIGAAAAAAAEAAAgAgQA=</HashCode>
       <FileName>DatabaseSyntax\MySQLSyntax.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ORM_Framework_DP.DBConnection">
+  <Class Name="ORM_Framework_DP.MySQLConnection">
     <Position X="7.75" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAQAFEAAAAAAIAgAAAABAEAAEAEAAAAAAAAAAgCAAAA=</HashCode>
-      <FileName>Connection\DBConnection.cs</FileName>
+      <FileName>Connection\MySQLConnection.cs</FileName>
+      <NewMemberFileName>Connection\DBConnection.cs</NewMemberFileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
