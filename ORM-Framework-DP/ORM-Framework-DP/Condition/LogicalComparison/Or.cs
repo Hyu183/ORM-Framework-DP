@@ -12,13 +12,6 @@ namespace ORM_Framework_DP
         {
             conditions = new List<Condition>();
         }
-
-        public Or(Condition a, Condition b)
-        {
-            conditions = new List<Condition>();
-            conditions.Add(a);
-            conditions.Add(b);
-        }
         public Or(List<Condition> conditions)
         {
             this.conditions = conditions;
