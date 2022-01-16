@@ -76,7 +76,7 @@ namespace ORM_Framework_DP
             return propNames;
         }
 
-        private object GetValue(T obj, string columnName)
+        public object GetValue(T obj, string columnName)
         {
             Type type = typeof(T);
             
@@ -113,6 +113,70 @@ namespace ORM_Framework_DP
             return obj;
         }
 
+        public List<HasMany> GetHasManyList()
+        {
+            Type type = typeof(T);
+            var props = type.GetProperties();
+
+            List<HasMany> listHasMany = new List<HasMany>();
+
+            foreach (var p in props)
+            {
+                HasMany hasMany = p.GetCustomAttribute<HasMany>();
+                if (hasMany == null)
+                {
+                    continue;
+                };
+                string[] pKPairs = hasMany.PKPairs;
+                Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
+                
+                foreach(string k in pKPairs)
+                {
+                    string[] keys = k.Split('=');
+                    PKPairsDic.Add(keys[0], keys[1]);
+                }
+                hasMany.PKPairsDic = PKPairsDic;
+
+                hasMany.propertyInfo = p;
+                listHasMany.Add(hasMany);
+
+            }
+
+            return listHasMany;
+        }
+
+        public List<HasOne> GetHasOneList()
+        {
+            Type type = typeof(T);
+            var props = type.GetProperties();
+
+            List<HasOne> listHasMany = new List<HasOne>();
+
+            foreach (var p in props)
+            {
+                HasOne hasMany = p.GetCustomAttribute<HasOne>();
+                if (hasMany == null)
+                {
+                    continue;
+                };
+                string[] pKPairs = hasMany.PKPairs;
+                Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
+
+                foreach (string k in pKPairs)
+                {
+                    string[] keys = k.Split('=');
+                    PKPairsDic.Add(keys[0], keys[1]);
+                }
+                hasMany.PKPairsDic = PKPairsDic;
+
+                hasMany.propertyInfo = p;
+                listHasMany.Add(hasMany);
+
+            }
+
+            return listHasMany;
+        }
+
         private string getColumeNameFromPropertyName(string propName)
         {
             Type type = typeof(T);
@@ -122,12 +186,19 @@ namespace ORM_Framework_DP
                 if (p.Name == propName)
                 {
                     Column col = p.GetCustomAttribute<Column>();
+
+                    if (col == null)
+                    {
+                        return null;
+                    }
+
                     return col.ColumnName;
                 }
 
             }
             return null;
         }
+
         public T BuildObjectFromValues(Dictionary<string, object> columeValuePair)
         {
             //Dictionary is pairs of colume names and values of these columes
@@ -138,6 +209,11 @@ namespace ORM_Framework_DP
             foreach (var prop in props)
             {
                 string columeName = getColumeNameFromPropertyName(prop.Name);
+                if (columeName == null)
+                {
+                    continue;
+                }
+
                 object columeValue = columeValuePair[columeName];
                 prop.SetValue(obj, Convert.ChangeType(columeValue, prop.PropertyType));
             }

@@ -11,7 +11,7 @@ namespace ORM_Framework_DP
         static void Main(string[] args)
         {
             //test insert employee
-            DBConnection dBConnection = new MySQLConnection("localhost","company","3306","root","1234");
+            DBConnection dBConnection = new MySQLConnection("localhost","company","3360","root","root");
             //ORM<Employee> orm = new ORM<Employee>(dBConnection);
             //Employee employee1 = new Employee(6,"ABCD", "Male", 22, 9999, 1);
             //orm.Insert(employee1).Execute();
@@ -19,10 +19,21 @@ namespace ORM_Framework_DP
 
             //test insert company
             ORM<Company> orm2 = new ORM<Company>(dBConnection);
-            Company company1 = new Company("Meta",20000,DateTime.Now);
-            orm2.Insert(company1).Execute();
+            Company company1 = new Company("Arizona",26000,DateTime.Now);
 
-           
+            //orm2.Insert(company1).Execute();
+
+            List<Company> companies = orm2.Select().Where("id = 1").GroupBy("name")
+                .GetSelectQuery().Execute<Company>();
+
+            foreach (Company company in companies)
+            {
+                Console.WriteLine(company.Name);
+            }
+
+            //ORM<TaxCode> ormTaxCode = new ORM<TaxCode>(dBConnection);
+            //TaxCode tax = new TaxCode("CFF229");
+            //ormTaxCode.Insert(tax).Execute();
 
             dBConnection.Close();           
 
