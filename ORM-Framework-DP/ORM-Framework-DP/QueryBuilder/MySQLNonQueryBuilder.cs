@@ -5,9 +5,9 @@ using System.Text;
 
 namespace ORM_Framework_DP
 {
-    public class QueryBuilder
+    public class MySQLNonQueryBuilder:NonQueryBuilder
     {
-        public string ConvertValueToString(object value, Type type)
+        public override string ConvertValueToString(object value, Type type)
         {
             if(type== typeof(string))
             {
@@ -21,7 +21,7 @@ namespace ORM_Framework_DP
             return value.ToString();
         }
 
-        public  string BuildInsert(string tableName, List<string> columnNames, List<object> values)
+        public override string BuildInsert(string tableName, List<string> columnNames, List<object> values)
         {
             string columnNamesString = "";
             string valuesString = "";
@@ -41,7 +41,7 @@ namespace ORM_Framework_DP
             string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2})",tableName,columnNamesString,valuesString);
             return query;
         }
-        public string BuildDelete(string tableName, List<string> columnNames, List<object> values)
+        public override string BuildDelete(string tableName, List<string> columnNames, List<object> values)
         {
             string columnNamesString = "";
             string valuesString = "";
@@ -70,7 +70,7 @@ namespace ORM_Framework_DP
             return query;
         }
 
-        public string BuildUpdate(string tableName, List<object> values, string condition)
+        public override string BuildUpdate(string tableName, List<object> values, string condition)
         {
             string valuesString = "";
 

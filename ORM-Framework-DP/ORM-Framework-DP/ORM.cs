@@ -8,19 +8,19 @@ namespace ORM_Framework_DP
     public class ORM<T> where T:new()
     {
         private DBConnection dBConnection;
-        private QueryBuilder queryBuilder;
+        private NonQueryBuilder nonQueryBuilder;
         private AttributeHelper<T> attributeHelper;
 
-        public ORM(DBConnection dBConnection)
+        public ORM(DBConnection dBConnection, NonQueryBuilder nonQueryBuilder)
         {
             this.dBConnection = dBConnection;
-            queryBuilder = new QueryBuilder();
+            this.nonQueryBuilder = nonQueryBuilder;
             attributeHelper = new AttributeHelper<T>();
         }
 
         public InsertQuery<T> Insert(T obj)
         {
-            return new InsertQuery<T>(obj,dBConnection, queryBuilder, attributeHelper);
+            return new InsertQuery<T>(obj,dBConnection, nonQueryBuilder, attributeHelper);
         }
 
         public UpdateQueryBuilder<T> Update(T obj)
@@ -30,7 +30,7 @@ namespace ORM_Framework_DP
 
         public DeleteQueryNonQuery<T> Delete(T obj)
         {
-            return new DeleteQueryNonQuery<T>(obj, dBConnection, queryBuilder, attributeHelper);
+            return new DeleteQueryNonQuery<T>(obj, dBConnection, nonQueryBuilder, attributeHelper);
         }
 
         public DeleteQueryBuilder<T> Delete()

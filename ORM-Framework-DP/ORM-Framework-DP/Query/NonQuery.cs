@@ -10,10 +10,10 @@ namespace ORM_Framework_DP
     {
     
         protected DBConnection dBConnection;
-        protected QueryBuilder queryBuilder;
+        protected NonQueryBuilder queryBuilder;
         protected AttributeHelper<T> attributeHelper;
 
-        public NonQuery(DBConnection dBConnection, QueryBuilder queryBuilder, AttributeHelper<T> attributeHelper)
+        public NonQuery(DBConnection dBConnection, NonQueryBuilder queryBuilder, AttributeHelper<T> attributeHelper)
         {           
             this.dBConnection = dBConnection;
             this.queryBuilder = queryBuilder;
