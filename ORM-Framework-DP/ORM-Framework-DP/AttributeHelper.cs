@@ -107,53 +107,24 @@ namespace ORM_Framework_DP
             return obj;
         }
 
-        public List<HasMany> GetHasManyList()
+        public List<HasN> GetHasNList(Type typeHas)
         {
             Type type = typeof(T);
             var props = type.GetProperties();
 
-            List<HasMany> listHasMany = new List<HasMany>();
+            List<HasN> listHasN = new List<HasN>();
 
             foreach (var p in props)
             {
-                HasMany hasMany = p.GetCustomAttribute<HasMany>();
-                if (hasMany == null)
+                HasN hasN = p.GetCustomAttribute<HasN>();
+                if (hasN == null)
+                {
+                    continue;
+                } else if (hasN.GetType() != typeHas)
                 {
                     continue;
                 };
-                string[] pKPairs = hasMany.PKPairs;
-                Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
-                
-                foreach(string k in pKPairs)
-                {
-                    string[] keys = k.Split('=');
-                    PKPairsDic.Add(keys[0], keys[1]);
-                }
-                hasMany.PKPairsDic = PKPairsDic;
-
-                hasMany.propertyInfo = p;
-                listHasMany.Add(hasMany);
-
-            }
-
-            return listHasMany;
-        }
-
-        public List<HasOne> GetHasOneList()
-        {
-            Type type = typeof(T);
-            var props = type.GetProperties();
-
-            List<HasOne> listHasMany = new List<HasOne>();
-
-            foreach (var p in props)
-            {
-                HasOne hasMany = p.GetCustomAttribute<HasOne>();
-                if (hasMany == null)
-                {
-                    continue;
-                };
-                string[] pKPairs = hasMany.PKPairs;
+                string[] pKPairs = hasN.PKPairs;
                 Dictionary<string, string> PKPairsDic = new Dictionary<string, string>();
 
                 foreach (string k in pKPairs)
@@ -161,14 +132,14 @@ namespace ORM_Framework_DP
                     string[] keys = k.Split('=');
                     PKPairsDic.Add(keys[0], keys[1]);
                 }
-                hasMany.PKPairsDic = PKPairsDic;
+                hasN.PKPairsDic = PKPairsDic;
 
-                hasMany.propertyInfo = p;
-                listHasMany.Add(hasMany);
+                hasN.propertyInfo = p;
+                listHasN.Add(hasN);
 
             }
 
-            return listHasMany;
+            return listHasN;
         }
 
         private string getColumeNameFromPropertyName(string propName)

@@ -29,8 +29,8 @@ namespace ORM_Framework_DP
             foreach (var rowValue in rowValues)
             {
                 T t = attHelper.BuildObjectFromValues(rowValue);
-                t = SelectHasMany(attHelper.GetHasManyList(), t);
-                t = SelectHasOne(attHelper.GetHasOneList(), t);
+                t = SelectHasMany(attHelper.GetHasNList(typeof(HasMany)), t);
+                t = SelectHasOne(attHelper.GetHasNList(typeof(HasOne)), t);
                 result.Add(t);
             }
 
@@ -51,10 +51,10 @@ namespace ORM_Framework_DP
             return result;
         }
 
-        private T SelectHasMany<T>(List<HasMany> manyList, T obj) where T : new()
+        private T SelectHasMany<T>(List<HasN> manyList, T obj) where T : new()
         {
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
-            foreach (HasMany many in manyList)
+            foreach (HasN many in manyList)
             {
                 Dictionary<string, string> valuePairs
                     = new Dictionary<string, string>();
@@ -100,10 +100,10 @@ namespace ORM_Framework_DP
             return new T();
         }
 
-        private T SelectHasOne<T>(List<HasOne> oneList, T obj) where T : new()
+        private T SelectHasOne<T>(List<HasN> oneList, T obj) where T : new()
         {
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
-            foreach (HasOne one in oneList)
+            foreach (HasN one in oneList)
             {
                 Dictionary<string, string> valuePairs
                     = new Dictionary<string, string>();
