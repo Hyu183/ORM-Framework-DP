@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class GreaterThan : Comparison
+    public class GreaterThan : Comparison
     {
         public GreaterThan(string a, object b, string aggegrateFunction = "") : base (a, b, aggegrateFunction)
         {

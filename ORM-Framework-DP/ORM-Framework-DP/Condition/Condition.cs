@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    abstract class Condition
+    public abstract class Condition
     {
         public abstract string parseToSQL();
         public static And And(List<Condition> conditions)

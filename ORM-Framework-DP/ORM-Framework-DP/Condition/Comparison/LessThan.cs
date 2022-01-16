@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class LessThan : Comparison
+    public class LessThan : Comparison
     {
         public LessThan(string a, object b, string aggegrateFunction = "") :base(a, b, aggegrateFunction)
         {

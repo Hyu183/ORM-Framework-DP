@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class And : LogicalComparison
+    public class And : LogicalComparison
     {
         public And()
         {

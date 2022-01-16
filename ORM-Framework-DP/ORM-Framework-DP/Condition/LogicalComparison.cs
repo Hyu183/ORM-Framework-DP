@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    abstract class LogicalComparison : Condition
+    public abstract class LogicalComparison : Condition
     {
         protected List<Condition> conditions;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    class Like : Comparison
+    public class Like : Comparison
     {
         public Like(string a, object b, string aggegrateFunction = ""):base (a, b, aggegrateFunction)
         {
