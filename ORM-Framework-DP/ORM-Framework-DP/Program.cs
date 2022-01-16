@@ -12,7 +12,7 @@ namespace ORM_Framework_DP
         {
             //test insert employee
             DatabaseSyntax databaseSyntax = new MySQLSyntax();
-            DBConnection dBConnection = new MySQLConnection("localhost","company","3360","root","root", databaseSyntax);
+            DBConnection dBConnection = new DBConnection("localhost","company","3360","root","root", databaseSyntax);
             //ORM<Employee> orm = new ORM<Employee>(dBConnection);
             //Employee employee1 = new Employee(6,"ABCD", "Male", 22, 9999, 1);
             //orm.Insert(employee1).Execute();
