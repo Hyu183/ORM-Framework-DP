@@ -114,38 +114,10 @@ namespace ORM_Framework_DP
             //remove the last ","
             columnNamesString = columnNamesString[0..^1];
             valuesString = valuesString[0..^1];
-            string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", tableName, columnNamesString, valuesString);
+            string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2});", tableName, columnNamesString, valuesString);
             return query;
         }
-        public  string BuildDelete(string tableName, List<string> columnNames, List<object> values)
-        {
-            string columnNamesString = "";
-            string valuesString = "";
-            string whereCondition = "";
-            foreach (var columnName in columnNames)
-            {
-                columnNamesString += columnName + ",";
-            }
-
-            foreach (var value in values)
-            {
-                valuesString += ConvertValueToString(value, value.GetType()) + ",";
-            }
-
-            for (int i = 1; i < columnNames.Count - 1; i++)
-            {
-                whereCondition += columnNames[i] + " = " + ConvertValueToString(values[i], values[i].GetType()) + " AND ";
-            }
-            whereCondition += columnNames[columnNames.Count - 1] + " = " + ConvertValueToString(values[columnNames.Count - 1], values[columnNames.Count - 1].GetType());
-
-            columnNamesString = columnNamesString[0..^1];
-            valuesString = valuesString[0..^1];
-            string query = string.Format("DELETE FROM {0} WHERE {1}", tableName, whereCondition);
-            Console.WriteLine(query);
-
-            return query;
-        }
-
+        
 
         public  string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap)
         {
@@ -170,7 +142,7 @@ namespace ORM_Framework_DP
             }
             query = query[0..^1];
 
-            query += " WHERE " + condition.parseToSQL();
+            query += " WHERE " + condition.parseToSQL() + ";";
 
 
             return query;
@@ -189,7 +161,36 @@ namespace ORM_Framework_DP
             }
             query = query[0..^1];
 
-            query += " WHERE " + condition.parseToSQL();
+            query += " WHERE " + condition.parseToSQL() + ";";
+
+            return query;
+        }
+
+        public string BuildDelete(string tableName, Dictionary<string, object> primaryKeyValueMap)
+        {
+            string query = "DELETE FROM " + tableName;
+
+
+
+            List<Condition> _condition = new List<Condition>();
+
+            foreach (var key in primaryKeyValueMap.Keys)
+            {
+                _condition.Add(Condition.Equal(key, primaryKeyValueMap[key]));
+            }
+
+            Condition condition = Condition.And(_condition);
+                        
+            
+            query += " WHERE " + condition.parseToSQL()+";";
+
+
+            return query;
+        }
+
+        public string BuildDeleteWithCondition(string tableName, Condition condition)
+        {
+            string query = "DELETE FROM " + tableName + " WHERE " + condition.parseToSQL() + ";";
 
             return query;
         }

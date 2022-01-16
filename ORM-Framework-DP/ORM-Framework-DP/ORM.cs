@@ -7,14 +7,12 @@ namespace ORM_Framework_DP
 {
     public class ORM<T> where T:new()
     {
-        private DBConnection dBConnection;
-        //private NonQueryBuilder nonQueryBuilder;
+        private DBConnection dBConnection;       
         private AttributeHelper<T> attributeHelper;
 
         public ORM(DBConnection dBConnection)
         {
-            this.dBConnection = dBConnection;
-            //this.nonQueryBuilder = nonQueryBuilder;
+            this.dBConnection = dBConnection;           
             attributeHelper = new AttributeHelper<T>();
         }
 
@@ -26,24 +24,36 @@ namespace ORM_Framework_DP
         public UpdateQuery<T> Update(T obj)
         {
             return new UpdateQuery<T>(obj, dBConnection, attributeHelper, dBConnection.GetDatabaseSyntax());
-            //return new MySQLUpdateQueryBuilder<T>(dBConnection, attributeHelper);
+            
         }
 
         public UpdateQuery<T> Update()
         {
             return new UpdateQuery<T>( dBConnection,attributeHelper, dBConnection.GetDatabaseSyntax());
-            //return new MySQLUpdateQueryBuilder<T>(dBConnection, attributeHelper);
+           
         }
 
-        public DeleteQueryNonQuery<T> Delete(T obj)
+        public DeleteQuery<T> Delete(T obj)
         {
-            return new DeleteQueryNonQuery<T>(obj, dBConnection,  attributeHelper, dBConnection.GetDatabaseSyntax());
+            return new DeleteQuery<T>(obj, dBConnection, attributeHelper, dBConnection.GetDatabaseSyntax());
+
         }
 
-        public DeleteQueryBuilder<T> Delete()
+        public DeleteQuery<T> Delete()
         {
-            return new MySQLDeleteQueryBuilder<T>(dBConnection, attributeHelper);
+            return new DeleteQuery<T>(dBConnection, attributeHelper, dBConnection.GetDatabaseSyntax());
+
         }
+
+        //public DeleteQueryNonQuery<T> Delete(T obj)
+        //{
+        //    return new DeleteQueryNonQuery<T>(obj, dBConnection,  attributeHelper, dBConnection.GetDatabaseSyntax());
+        //}
+
+        //public DeleteQueryBuilder<T> Delete()
+        //{
+        //    return new MySQLDeleteQueryBuilder<T>(dBConnection, attributeHelper);
+        //}
 
         public SelectQueryBuilder Select()
         {

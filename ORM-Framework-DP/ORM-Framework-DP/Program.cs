@@ -11,12 +11,14 @@ namespace ORM_Framework_DP
         static void Main(string[] args)
         {
             DatabaseSyntax databaseSyntax = new MySQLSyntax();
-            DBConnection dBConnection = new DBConnection("localhost", "company", "3360", "root", "root", databaseSyntax);
+            DBConnection dBConnection = new DBConnection("localhost", "company", "3360", "root", "", databaseSyntax);
 
             ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
             Employee e = new Employee(7,"no name","female",20,1000,1);
 
             //orm1.Insert(e).Execute();
+            orm1.Delete(e).Execute();
+            //orm1.Delete().Where(Condition.Equal("name", "no name")).Execute();
 
             //Obj can co id
             //orm1.Update(e).Execute();
