@@ -28,9 +28,9 @@ namespace ORM_Framework_DP
             throw new NotImplementedException();
         }
 
-        public object Delete()
+        public DeleteQuery<T> Delete(T obj)
         {
-            throw new NotImplementedException();
+            return new DeleteQuery<T>(obj, dBConnection, queryBuilder, attributeHelper);
         }
 
         public object Select()
