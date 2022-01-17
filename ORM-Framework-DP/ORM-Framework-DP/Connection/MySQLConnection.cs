@@ -83,7 +83,12 @@ namespace ORM_Framework_DP
 
         public int Insert(string query)
         {
-            return ExecuteNonQuery(query);
+            //query += "SELECT CAST(scope_identity() AS int);";
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = query;
+            cmd.ExecuteNonQuery();
+            return (int)cmd.LastInsertedId ;
+            //return ExecuteNonQuery(query);
         }
 
         public int Update(string query)
