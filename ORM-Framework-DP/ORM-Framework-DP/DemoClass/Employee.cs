@@ -49,14 +49,16 @@ namespace ORM_Framework_DP
             CompanyID = companyID;
         }
 
-        public void toString()
+        public string toString()
         {
-            Console.WriteLine("Employee: {0}", ID);
-            Console.WriteLine("Name: {0}", Name);
-            Console.WriteLine("Sex: {0}", Sex);
-            Console.WriteLine("Age: {0}", Age);
-            Console.WriteLine("Salary: {0}", Salary);
-            Console.WriteLine("CompanyID: {0}", CompanyID);
+            return string.Format(
+                    "id: {0}\n" +
+                    "name: {1}\n" +
+                    "sex: {2}\n" +
+                    "age: {3}\n" +
+                    "salary: {2}\n" +
+                    "comanyID: {3}\n",
+                    ID, Name, Sex, Age, Salary, CompanyID);
         }
 
     }

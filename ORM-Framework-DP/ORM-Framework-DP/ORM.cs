@@ -45,16 +45,6 @@ namespace ORM_Framework_DP
 
         }
 
-        //public DeleteQueryNonQuery<T> Delete(T obj)
-        //{
-        //    return new DeleteQueryNonQuery<T>(obj, dBConnection,  attributeHelper, dBConnection.GetDatabaseSyntax());
-        //}
-
-        //public DeleteQueryBuilder<T> Delete()
-        //{
-        //    return new MySQLDeleteQueryBuilder<T>(dBConnection, attributeHelper);
-        //}
-
         public SelectQueryBuilder Select()
         {
             return new SelectQueryBuilder(dBConnection, 

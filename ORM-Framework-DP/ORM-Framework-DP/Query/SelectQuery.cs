@@ -67,10 +67,10 @@ namespace ORM_Framework_DP
             return new T();
         }
 
-        private T SelectHasN<T>(List<HasN> oneList, T obj, string methodString, Func<Type, Type> calculateItemType) where T : new()
+        private T SelectHasN<T>(List<HasN> nList, T obj, string methodString, Func<Type, Type> calculateItemType) where T : new()
         {
             AttributeHelper<T> attHelper = new AttributeHelper<T>();
-            foreach (HasN one in oneList)
+            foreach (HasN one in nList)
             {
                 Dictionary<string, string> valuePairs
                     = new Dictionary<string, string>();
