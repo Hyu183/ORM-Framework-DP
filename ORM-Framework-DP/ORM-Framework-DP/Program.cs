@@ -13,41 +13,34 @@ namespace ORM_Framework_DP
             DBConnection dBConnection = new MySQLConnection("localhost", "company", "3360", "root", "root");
 
             ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
-            Employee e = new Employee(7,"no name","female",20,1000,1);
 
+            Employee e = new Employee(10, "Nguyen Thi A", "female", 20, 1000, 1);
+
+            // Insert
             //orm1.Insert(e).Execute();
-            //orm1.Delete(e).Execute();
-            //orm1.Delete().Where(Condition.Equal("name", "no name")).Execute();
 
-            //Obj can co id
+            // Update by object
+            //e.Age = 30;
             //orm1.Update(e).Execute();
 
-            //orm1.Update().Set("sex", "male").Where(Condition.Equal("id", 7)).Execute();
-
-            //test insert company
-            ORM<Company> orm2 = new ORM<Company>(dBConnection);
-            //Company company1 = new Company(5,"Run now", 26000, DateTime.Now,2);
-
-            //orm2.Insert(company1).Execute();
-
-            //test update company
-            //orm2.Update(company1).Execute();
-
-            //test update with condition company
-            //orm2.Update().Set("name", "Meta").Where(Condition.Equal("id", 5)).Execute();
+            // Update using where
+            //orm1.Update().Set("salary", 2800).Where(Condition.Equal("company_id", 1)).Execute();
 
 
-            List<Company> companies = orm2.Select().Where(Condition.GreaterThan("id", 0))
-                .GroupBy("tax_code_id")
-                .Having(Condition.GreaterThan("name", 1, "COUNT"))
-                .GetSelectQuery().Execute<Company>();
+            // Delete by object
+            //orm1.Delete(e).Execute();
 
-            //orm2.Delete().Where("name = 'Arizona'").GetDeleteQuery().Execute();
+
+            //ORM<Company> orm3 = new ORM<Company>(dBConnection);
+            //List<Company> companies = orm3.Select().Where(Condition.GreaterThan("id", 0))
+            //    .GroupBy("tax_code_id")
+            //    .Having(Condition.GreaterThan("name", 1, "COUNT"))
+            //    .GetSelectQuery().Execute<Company>();
 
 
             //foreach (Company company in companies)
             //{
-            //    Console.WriteLine(company.Name);
+            //    Console.WriteLine(company.toString());
             //}
 
             //ORM<TaxCode> ormTaxCode = new ORM<TaxCode>(dBConnection);
@@ -55,9 +48,11 @@ namespace ORM_Framework_DP
             //ormTaxCode.Insert(tax).Execute();
 
             //Condition use
-            Console.WriteLine(Condition.GreaterThan("id", 1).parseToSQL());
+            //Console.WriteLine(Condition.GreaterThan("id", 1).parseToSQL());
 
-            Console.WriteLine(Condition.And(new List<Condition> { Condition.GreaterThan("id", 1), Condition.Equal("name", "Facebook"), Condition.Or(new List<Condition> { Condition.Equal("name", "Facebook"), Condition.Equal("name", "Facebook") }) }).parseToSQL());
+            //Console.WriteLine(Condition.And(new List<Condition> { Condition.GreaterThan("id", 1), 
+            //    Condition.Equal("name", "Facebook"), Condition.Or(new List<Condition> { Condition.Equal("name", "Facebook"), 
+            //        Condition.Equal("name", "Facebook") }) }).parseToSQL());
 
 
             dBConnection.Close();

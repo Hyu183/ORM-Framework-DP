@@ -22,6 +22,7 @@ namespace ORM_Framework_DP
         [Column("established_date")]
         public DateTime EstablishedDate { get; set; }
 
+        // attribute_name=target_colume_name
         [HasMany("employee", "ID=company_id")]
         public List<Employee> Employees { get; set; }
 
@@ -48,6 +49,29 @@ namespace ORM_Framework_DP
             NumOfEmployee = numOfEmployee;
             EstablishedDate = establishedDate;
             TaxCodeID = taxCodeID;
+        }
+
+        public string toString()
+        {
+            string listEmployeeString = "---Employee list:\n";
+            foreach(Employee employee in Employees)
+            {
+                listEmployeeString += employee.toString();
+            }
+            listEmployeeString += "--------------\n";
+
+            return 
+                string.Format(
+                    "id: {0}\n" +
+                    "name: {1}\n" +
+                    "NumOfEmployee: {2}\n" +
+                    "EstablishedDate: {3}\n" +
+                    "TaxCodeID: {4}\n" +
+                    "TaxCode: {5}\n" +
+                    "{6}", 
+                    ID, Name, NumOfEmployee, EstablishedDate.ToString(),
+                    TaxCodeID, TaxCode.toString(), listEmployeeString
+                    );
         }
     }
 }

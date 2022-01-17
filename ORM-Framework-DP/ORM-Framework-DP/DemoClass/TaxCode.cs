@@ -28,5 +28,13 @@ namespace ORM_Framework_DP
         }
 
         public TaxCode() { }
+
+        public string toString()
+        {
+            return string.Format(
+                    "id: {0}\n" +
+                    "name: {1}\n",
+                    ID, CodeName);
+        }
     }
 }
