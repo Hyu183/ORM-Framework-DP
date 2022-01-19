@@ -42,14 +42,6 @@ namespace ORM_Framework_DP
             TaxCodeID = taxCodeID;
         }
 
-        public Company(int iD, string name, int numOfEmployee, DateTime establishedDate, int taxCodeID)
-        {
-            ID = iD;
-            Name = name;
-            NumOfEmployee = numOfEmployee;
-            EstablishedDate = establishedDate;
-            TaxCodeID = taxCodeID;
-        }
 
         public string toString()
         {

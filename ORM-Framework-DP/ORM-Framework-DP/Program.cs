@@ -10,15 +10,30 @@ namespace ORM_Framework_DP
     {
         static void Main(string[] args)
         {
-            DBConnection dBConnection = new SQLserverConnection("DESKTOP-JG2PKFM\\SQLEXPRESS", "company", "", "DESKTOP-JG2PKFM\\DinhKhoi", "");
+            //MYSQL - Demo
+            DBConnection dBConnection = new MySQLConnection("localhost","company","3360","root","");
 
             ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
 
-            Employee e = new Employee(11, "Nguyen Thi A", "Female", 20, 1000, 1);
+            Employee e = new Employee("Nguyen Thi A", "Female", 20, 1000, 1);
 
             // Insert
-            orm1.Insert(e).Execute();
+            e.ID = orm1.Insert(e).Execute();
+            Console.WriteLine(e.toString());
 
+
+
+            //SQLserver Demo
+            ////DBConnection dBConnection = new SQLserverConnection("DESKTOP-JG2PKFM\\SQLEXPRESS", "company", "", "DESKTOP-JG2PKFM\\DinhKhoi", "");
+            //DBConnection dBConnection = new SQLserverConnection("QUANGHUY\\SQLEXPRESS", "company", "", "QUANGHUY\\Bibib", "");
+
+            //ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
+
+            //Employee e = new Employee("Nguyen Thi A", "Female", 20, 1000, 1);
+
+            //// Insert
+            //e.ID = orm1.Insert(e).Execute();
+            //Console.WriteLine(e.toString());
             // Update by object
             //e.Age = 30;
             //orm1.Update(e).Execute();

@@ -44,25 +44,25 @@ namespace ORM_Framework_DP
             return columnNames;
         }
 
-        //public List<string> GetPrimaryKeyNames()
-        //{
-        //    Type type = typeof(T);
-        //    var props = type.GetProperties();
-        //    List<string> primaryKeyNames = new List<string>();
-        //    foreach (var p in props)
-        //    {
+        public List<string> GetPrimaryKeyNames()
+        {
+            Type type = typeof(T);
+            var props = type.GetProperties();
+            List<string> primaryKeyNames = new List<string>();
+            foreach (var p in props)
+            {
 
-        //        PrimaryKey pKey = p.GetCustomAttribute<PrimaryKey>();
-        //        if (pKey == null)
-        //        {
-        //            continue;
-        //        };
+                PrimaryKey pKey = p.GetCustomAttribute<PrimaryKey>();
+                if (pKey == null)
+                {
+                    continue;
+                };
 
-        //        primaryKeyNames.Add(pKey.PrimaryKeyName);
-        //    }
+                primaryKeyNames.Add(pKey.PrimaryKeyName);
+            }
 
-        //    return primaryKeyNames;
-        //}
+            return primaryKeyNames;
+        }
         public Dictionary<string,object> GetPrimaryKeyValueMap(T obj)
         {
             Type type = typeof(T);

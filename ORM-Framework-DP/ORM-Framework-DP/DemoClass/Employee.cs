@@ -39,15 +39,7 @@ namespace ORM_Framework_DP
             CompanyID = companyID;
         }
 
-        public Employee(int iD, string name, string sex, int age, int salary, int companyID)
-        {
-            ID = iD;
-            Name = name;
-            Sex = sex;
-            Age = age;
-            Salary = salary;
-            CompanyID = companyID;
-        }
+        
 
         public string toString()
         {

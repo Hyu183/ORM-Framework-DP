@@ -14,13 +14,7 @@ namespace ORM_Framework_DP
         public int ID { get; set; }
 
         [Column("code_name")]
-        public string CodeName { get; set; }
-
-        public TaxCode(int iD, string codeName)
-        {
-            ID = iD;
-            CodeName = codeName;
-        }
+        public string CodeName { get; set; }       
 
         public TaxCode(string codeName)
         {

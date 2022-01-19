@@ -97,24 +97,35 @@ namespace ORM_Framework_DP
             return string.Format("WHERE {0}", condition.parseToSQL());
         }
 
-        public string BuildInsert(string tableName, List<string> columnNames, List<object> values)
+        public string BuildInsert(string tableName, List<string> primaryKeyName, Dictionary<string, object> values)
         {
-            string columnNamesString = "";
-            string valuesString = "";
-            foreach (var columnName in columnNames)
+            foreach (var primaryKey in primaryKeyName)
             {
-                columnNamesString += columnName + ",";
+                if (values.ContainsKey(primaryKey))
+                {
+                    values.Remove(primaryKey);
+                }
             }
 
-            foreach (var value in values)
+            var columnNameString = "";
+            foreach (var colName in values.Keys)
+            {
+                columnNameString += colName + ",";
+            }
+
+            var valuesString = "";
+            foreach (var value in values.Values)
             {
                 valuesString += ConvertValueToString(value, value.GetType()) + ",";
             }
 
             //remove the last ","
-            columnNamesString = columnNamesString[0..^1];
+            columnNameString = columnNameString[0..^1];
             valuesString = valuesString[0..^1];
-            string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2});", tableName, columnNamesString, valuesString);
+            string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2});", tableName, columnNameString, valuesString);
+            query += "SELECT CAST(scope_identity() AS int)";
+
+
             return query;
         }
 

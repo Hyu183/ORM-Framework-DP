@@ -80,7 +80,8 @@ namespace ORM_Framework_DP
         {
             SqlCommand cmd = connection.CreateCommand();
             cmd.CommandText = query;
-            cmd.ExecuteNonQuery();
+            //cmd.ExecuteNonQuery();
+            
             return (int)cmd.ExecuteScalar();
         }
 

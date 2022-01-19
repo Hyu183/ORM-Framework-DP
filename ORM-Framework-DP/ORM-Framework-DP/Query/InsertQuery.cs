@@ -16,10 +16,12 @@ namespace ORM_Framework_DP
         public override int Execute()
         {
             string tableName = attributeHelper.GetTableName();
-            List<string> columnNames = attributeHelper.GetColumnNames();
-            List<object> values = attributeHelper.GetColumnValues(obj);
-
-            string query = databaseSyntax.BuildInsert(tableName, columnNames,values);
+            //List<string> columnNames = attributeHelper.GetColumnNames();
+            //List<object> values = attributeHelper.GetColumnValues(obj);
+            List<string> primaryKeyName = attributeHelper.GetPrimaryKeyNames();
+            Dictionary<string, object> newColumnValuesMap = attributeHelper.GetColumnValueMap(obj);
+            
+            string query = databaseSyntax.BuildInsert(tableName, primaryKeyName, newColumnValuesMap);
 
             return dBConnection.Insert(query);
         }
