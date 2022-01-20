@@ -20,6 +20,8 @@ namespace ORM_Framework_DP
 
             if (groupByColumeNames != null)
             {
+                string tag = GetGroupByPart(groupByColumeNames).Substring(9);
+                query = query.Replace("*", tag);
                 query += " " + GetGroupByPart(groupByColumeNames);
             }
 
@@ -35,7 +37,7 @@ namespace ORM_Framework_DP
 
         public string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName)
         {
-            string query = string.Format("SELECT * FROM {0} WHERE 1", tableName);
+            string query = string.Format("SELECT * FROM {0} WHERE 1=1", tableName);
             foreach (var pair in columeNameValuePairs)
             {
                 query += " AND ";
