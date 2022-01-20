@@ -109,15 +109,15 @@ CREATE TABLE [dbo].[employee](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[tax_name]    Script Date: 19/1/2022 10:09:07 AM ******/
+/****** Object:  Table [dbo].[tax_code]    Script Date: 19/1/2022 10:09:07 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[tax_name](
+CREATE TABLE [dbo].[tax_code](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[code_name] [varchar](255) NOT NULL,
- CONSTRAINT [PK_tax_name] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_tax_code] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -141,20 +141,20 @@ INSERT [dbo].[employee] ([id], [name], [sex], [age], [salary], [company_id]) VAL
 GO
 SET IDENTITY_INSERT [dbo].[employee] OFF
 GO
-SET IDENTITY_INSERT [dbo].[tax_name] ON 
+SET IDENTITY_INSERT [dbo].[tax_code] ON 
 GO
-INSERT [dbo].[tax_name] ([id], [code_name]) VALUES (1, N'ALM112')
+INSERT [dbo].[tax_code] ([id], [code_name]) VALUES (1, N'ALM112')
 GO
-INSERT [dbo].[tax_name] ([id], [code_name]) VALUES (2, N'CFF227')
+INSERT [dbo].[tax_code] ([id], [code_name]) VALUES (2, N'CFF227')
 GO
-INSERT [dbo].[tax_name] ([id], [code_name]) VALUES (3, N'CFF229')
+INSERT [dbo].[tax_code] ([id], [code_name]) VALUES (3, N'CFF229')
 GO
-SET IDENTITY_INSERT [dbo].[tax_name] OFF
+SET IDENTITY_INSERT [dbo].[tax_code] OFF
 GO
-ALTER TABLE [dbo].[company]  WITH CHECK ADD  CONSTRAINT [FK_company_tax_name] FOREIGN KEY([tax_code_id])
-REFERENCES [dbo].[tax_name] ([id])
+ALTER TABLE [dbo].[company]  WITH CHECK ADD  CONSTRAINT [FK_company_tax_code] FOREIGN KEY([tax_code_id])
+REFERENCES [dbo].[tax_code] ([id])
 GO
-ALTER TABLE [dbo].[company] CHECK CONSTRAINT [FK_company_tax_name]
+ALTER TABLE [dbo].[company] CHECK CONSTRAINT [FK_company_tax_code]
 GO
 ALTER TABLE [dbo].[employee]  WITH CHECK ADD  CONSTRAINT [FK_employee_company] FOREIGN KEY([company_id])
 REFERENCES [dbo].[company] ([id])
@@ -165,7 +165,3 @@ USE [master]
 GO
 ALTER DATABASE [company] SET  READ_WRITE 
 GO
-USE company
-GO
-SELECT * FROM company WHERE id>0
-SELECT * FROM company WHERE id>0 GROUP BY tax_code_id HAVING COUNT(name)>1
