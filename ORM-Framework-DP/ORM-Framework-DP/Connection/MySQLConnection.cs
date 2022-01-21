@@ -52,28 +52,52 @@ namespace ORM_Framework_DP
             return cmd.ExecuteNonQuery();
         }
 
-        public List<Dictionary<string,object>> SelectWithoutRelation(string query)
+        public List<object> SelectWithoutRelation(string query,string [] selectedCols)
         {
             Open();
             MySqlCommand command = connection.CreateCommand();
             command.CommandText = query;
             MySqlDataReader r = command.ExecuteReader();
+            List<object> res = new List<object>();            
 
-            List<Dictionary<string, object>> rowValues = new List<Dictionary<string, object>>();
-
-            while (r.Read())
+            if (selectedCols[0] == "*")
             {
-                Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
-                for (int inc = 0; inc < r.FieldCount; inc++)
+
+
+                while (r.Read())
                 {
-                    string propName = r.GetName(inc);
-                    columeNameValuePairs.Add(propName, r.GetValue(inc));
+                    Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
+                    for (int inc = 0; inc < r.FieldCount; inc++)
+                    {
+                        string propName = r.GetName(inc);
+                        columeNameValuePairs.Add(propName, r.GetValue(inc));
+                    }
+                   
+                    res.Add(columeNameValuePairs);
                 }
-                rowValues.Add(columeNameValuePairs);
+
             }
+            else
+            {
+               
+
+                while (r.Read())
+                {
+                    Dictionary<string, string> columeNameValuePairs = new Dictionary<string, string>();
+                    for (int inc = 0; inc < r.FieldCount; inc++)
+                    {
+                        
+                        string selectedColName = selectedCols[inc];
+                        columeNameValuePairs.Add(selectedColName, r[inc].ToString());
+                    }
+                    res.Add(columeNameValuePairs);
+                }
+
+            }
+
             r.Close();
 
-            return rowValues;
+            return res;
         }
 
         public int Delete(string query)

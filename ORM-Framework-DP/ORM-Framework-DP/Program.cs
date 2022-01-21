@@ -13,9 +13,9 @@ namespace ORM_Framework_DP
             /***
              * MYSQL - Demo             
              * **/
-            //DBConnection dBConnection = new MySQLConnection("localhost","orm","3306","root","27062000");
+            //DBConnection dBConnection = new MySQLConnection("localhost", "company", "3360", "root", "");
 
-            //ORM<Employee> ormMYSQL1 = new ORM<Employee>(dBConnection);
+            //ORM<Company> ormMYSQL1 = new ORM<Company>(dBConnection);
 
             //Employee empMYSQL1 = new Employee("Nguyen Thi A", "Female", 20, 1000, 1);
 
@@ -23,16 +23,41 @@ namespace ORM_Framework_DP
             //empMYSQL1.ID = ormMYSQL1.Insert(empMYSQL1).Execute();
             //Console.WriteLine(empMYSQL1.toString());
 
+            ////Select *
+            //List<object> companies = ormMYSQL1.Select("*").Where(Condition.GreaterThan("id", 0))
+
+            //    .GetSelectQuery().Execute<Company>();
+
+            //foreach (Company company in companies)
+            //{
+            //    Console.WriteLine(company.toString());
+            //}
+
+            ////Select with group by
+            //List<object> result = ormMYSQL1.Select("tax_code_id", "count(name)").Where(Condition.GreaterThan("id", 0))
+            //    .GroupBy("tax_code_id")
+            //    .Having(Condition.GetGreaterThanOrEqual("name", 1, "COUNT"))
+            //    .GetSelectQuery().Execute<Company>();
+
+
+            //foreach (Dictionary<string, string> rows in result)
+            //{
+            //    Console.WriteLine("TaxCodeID: " + rows["tax_code_id"] + " Count(name): " + rows["count(name)"]);
+
+            //}
+
+
+
 
             /***
              * SQLserver Demo             
              * **/
-            DBConnection dBConnection = new SQLserverConnection("DESKTOP-JG2PKFM\\SQLEXPRESS", "company", "", "DESKTOP-JG2PKFM\\DinhKhoi", "");
-            ////DBConnection dBConnection = new SQLserverConnection("QUANGHUY\\SQLEXPRESS", "company", "", "QUANGHUY\\Bibib", "");
+            //DBConnection dBConnection = new SQLserverConnection("DESKTOP-JG2PKFM\\SQLEXPRESS", "company", "", "DESKTOP-JG2PKFM\\DinhKhoi", "");
+            DBConnection dBConnection = new SQLserverConnection("QUANGHUY\\SQLEXPRESS", "company", "", "QUANGHUY\\Bibib", "");
 
             //ORM<Employee> orm1 = new ORM<Employee>(dBConnection);
 
-            //Employee empSQLserver1 = new Employee("Nguyen Thi A", "Female", 20, 1000, 1);
+            //Employee empSQLserver1 = new Employee("Nguyen Thi A", "Female", 20, 1000, 4);
 
             //// Insert
             //empSQLserver1.ID = orm1.Insert(empSQLserver1).Execute();
@@ -56,20 +81,32 @@ namespace ORM_Framework_DP
 
 
             ORM<Company> orm3 = new ORM<Company>(dBConnection);
-            List<Company> companies = orm3.Select().Where(Condition.GreaterThan("id", 0))
-                .GroupBy("tax_code_id")
-                .Having(Condition.GreaterThan("name", 1, "COUNT"))
-                .GetSelectQuery().Execute<Company>();
-            //ORM<Company> orm3 = new ORM<Company>(dBConnection);
-            //List<Company> companies = orm3.Select().GetSelectQuery().Execute<Company>();
 
-            //ORM<Employee> orm3 = new ORM<Employee>(dBConnection);
-            //List<Employee> employees = orm3.Select().Where(Condition.GreaterThan("id", 0))
-            //    .GetSelectQuery().Execute<Employee>();
+            Company company1 = new Company("abc", 2000, DateTime.Now, 2);
+            orm3.Insert(company1).Execute();
+
+
+            //Select*
+            List<object> companies = orm3.Select("*").Where(Condition.GreaterThan("id", 0))
+
+                .GetSelectQuery().Execute<Company>();
 
             foreach (Company company in companies)
             {
                 Console.WriteLine(company.toString());
+            }
+
+            //Select with group by
+            List<object> result = orm3.Select("tax_code_id", "count(name)").Where(Condition.GreaterThan("id", 0))
+                .GroupBy("tax_code_id")
+                .Having(Condition.GetGreaterThanOrEqual("name", 1, "COUNT"))
+                .GetSelectQuery().Execute<Company>();
+
+
+            foreach (Dictionary<string, string> rows in result)
+            {
+                Console.WriteLine("TaxCodeID: " + rows["tax_code_id"] + " Count(name): " + rows["count(name)"]);
+
             }
 
             //ORM<TaxCode> ormTaxCode = new ORM<TaxCode>(dBConnection);

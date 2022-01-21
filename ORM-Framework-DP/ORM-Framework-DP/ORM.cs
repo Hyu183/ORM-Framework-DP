@@ -45,10 +45,15 @@ namespace ORM_Framework_DP
 
         }
 
-        public SelectQueryBuilder Select()
-        {
-            return new SelectQueryBuilder(dBConnection, 
-                attributeHelper.GetTableName(), dBConnection.GetDatabaseSyntax());
+        public SelectQueryBuilder Select(params string[] selectedCols)
+        {            
+            return new SelectQueryBuilder(dBConnection,
+                attributeHelper.GetTableName(), selectedCols, dBConnection.GetDatabaseSyntax());
         }
+        //public SelectQueryBuilder Select()
+        //{
+        //    return new SelectQueryBuilder(dBConnection,
+        //        attributeHelper.GetTableName(), dBConnection.GetDatabaseSyntax());
+        //}
     }
 }

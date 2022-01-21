@@ -45,25 +45,25 @@ namespace ORM_Framework_DP
 
         public string toString()
         {
-            //string listEmployeeString = "---Employee list:\n";
-            //foreach(Employee employee in Employees)
-            //{
-            //    listEmployeeString += employee.toString();
-            //}
-            //listEmployeeString += "--------------\n";
+            string listEmployeeString = "---Employee list:\n";
+            foreach (Employee employee in Employees)
+            {
+                listEmployeeString += employee.toString();
+            }
+            listEmployeeString += "------------------------------------------\n";
 
-            return 
+            return
                 string.Format(
                     "id: {0}\n" +
                     "name: {1}\n" +
                     "NumOfEmployee: {2}\n" +
                     "EstablishedDate: {3}\n" +
                     "TaxCodeID: {4}\n" +
-                    "TaxCode: {5}\n"
+                    "TaxCode: {5}\n" + "{6}"
                     , 
                     ID, Name, NumOfEmployee, EstablishedDate.ToString(),
-                    TaxCodeID, TaxCode.toString()
-                    //TaxCodeID, TaxCode.toString(), listEmployeeString
+                   
+                    TaxCodeID, TaxCode.toString(), listEmployeeString
                     );
         }
     }

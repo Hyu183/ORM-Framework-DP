@@ -49,7 +49,7 @@ namespace ORM_Framework_DP
                     "sex: {2}\n" +
                     "age: {3}\n" +
                     "salary: {2}\n" +
-                    "comanyID: {3}\n",
+                    "companyID: {3}\n--------\n",
                     ID, Name, Sex, Age, Salary, CompanyID);
         }
 

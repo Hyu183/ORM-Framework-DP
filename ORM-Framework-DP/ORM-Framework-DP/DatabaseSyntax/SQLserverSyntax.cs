@@ -8,20 +8,59 @@ namespace ORM_Framework_DP
 {
     public class SQLserverSyntax : DatabaseSyntax
     {
-        public string BuildQuery(string tableName, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
+        //public string BuildQuery(string tableName, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
+        //{
+        //    //string query = "SELECT ";
+
+        //    //foreach(var col in selectedCols)
+        //    //{
+        //    //    query += col + ", ";
+        //    //}
+        //    //query =string.Format("{0} {1}" ,query[0..^1]  , tableName);
+
+        //    string query = GetSelectAllPart(tableName);
+
+        //    if (whereConditon != null)
+        //    {
+        //        query += " " + GetWherePart(whereConditon);
+        //    }
+
+        //    if (groupByColumeNames != null)
+        //    {
+        //        string tag = GetGroupByPart(groupByColumeNames).Substring(9);
+        //        query = query.Replace("*", tag);
+        //        query += " " + GetGroupByPart(groupByColumeNames);
+        //    }
+
+        //    if (havingCondition != null)
+        //    {
+        //        query += " " + GetHavingPart(havingCondition);
+        //    }
+
+        //    query += ";";
+
+        //    return query;
+        //}
+
+        public string BuildQuery(string tableName, string[] selectedCols, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
         {
+            string query = "SELECT ";
 
-            string query = GetSelectAllPart(tableName);
+            foreach (var col in selectedCols)
+            {
+                query += col + ",";
+            }
+            query = query[0..^1];
+            query = string.Format("{0} FROM {1}", query , tableName);
 
+            
             if (whereConditon != null)
             {
                 query += " " + GetWherePart(whereConditon);
             }
 
             if (groupByColumeNames != null)
-            {
-                string tag = GetGroupByPart(groupByColumeNames).Substring(9);
-                query = query.Replace("*", tag);
+            {                
                 query += " " + GetGroupByPart(groupByColumeNames);
             }
 

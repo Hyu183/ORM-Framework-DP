@@ -47,28 +47,54 @@ namespace ORM_Framework_DP
             cmd.CommandText = query;
             return cmd.ExecuteNonQuery();
         }
-        public List<Dictionary<string, object>> SelectWithoutRelation(string query)
+        public List<object> SelectWithoutRelation(string query,string[] selectedCols)
         {
             Open();
             SqlCommand command = connection.CreateCommand();
             command.CommandText = query;
             SqlDataReader r = command.ExecuteReader();
 
-            List<Dictionary<string, object>> rowValues = new List<Dictionary<string, object>>();
+            List<object> res = new List<object>();
+            
 
-            while (r.Read())
+            if (selectedCols[0] == "*")
             {
-                Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
-                for (int inc = 0; inc < r.FieldCount; inc++)
+               
+
+                while (r.Read())
                 {
-                    string propName = r.GetName(inc);
-                    columeNameValuePairs.Add(propName, r.GetValue(inc));
+                    Dictionary<string, object> columeNameValuePairs = new Dictionary<string, object>();
+                    for (int inc = 0; inc < r.FieldCount; inc++)
+                    {
+                        string propName = r.GetName(inc);
+                        columeNameValuePairs.Add(propName, r.GetValue(inc));
+                    }
+                    //((List<Dictionary<string, object>>)rowValues).Add(columeNameValuePairs);
+                    res.Add(columeNameValuePairs);
                 }
-                rowValues.Add(columeNameValuePairs);
+               
+            }
+            else
+            {
+                //rowValues = new List<Dictionary<string, string>>();
+
+                while (r.Read())
+                {
+                    Dictionary<string, string> columeNameValuePairs = new Dictionary<string, string>();
+                    for (int inc = 0; inc < r.FieldCount; inc++)
+                    {
+                        //string propName = r.GetName(inc);
+                        //columeNameValuePairs.Add(propName, r.GetValue(inc));
+                        string selectedColName = selectedCols[inc];
+                        columeNameValuePairs.Add(selectedColName,r[inc].ToString());
+                    }
+                    res.Add(columeNameValuePairs);
+                }
+              
             }
             r.Close();
 
-            return rowValues;
+            return res;
         }
 
         public int Delete(string query)
