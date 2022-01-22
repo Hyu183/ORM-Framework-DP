@@ -33,15 +33,6 @@ namespace ORM_Framework_DP
         public TaxCode TaxCode { get; set; }
 
         public Company() { }
-
-        public Company( string name, int numOfEmployee, DateTime establishedDate, int taxCodeID)
-        {            
-            Name = name;
-            NumOfEmployee = numOfEmployee;
-            EstablishedDate = establishedDate;
-            TaxCodeID = taxCodeID;
-        }
-
         public Company(int iD, string name, int numOfEmployee, DateTime establishedDate, int taxCodeID)
         {
             ID = iD;
@@ -50,27 +41,37 @@ namespace ORM_Framework_DP
             EstablishedDate = establishedDate;
             TaxCodeID = taxCodeID;
         }
+        public Company( string name, int numOfEmployee, DateTime establishedDate, int taxCodeID)
+        {            
+            Name = name;
+            NumOfEmployee = numOfEmployee;
+            EstablishedDate = establishedDate;
+            TaxCodeID = taxCodeID;
+        }
+
 
         public string toString()
         {
             string listEmployeeString = "---Employee list:\n";
-            foreach(Employee employee in Employees)
+            foreach (Employee employee in Employees)
             {
                 listEmployeeString += employee.toString();
             }
-            listEmployeeString += "--------------\n";
+            listEmployeeString += "------------------------------------------\n";
 
-            return 
+            return
                 string.Format(
                     "id: {0}\n" +
                     "name: {1}\n" +
                     "NumOfEmployee: {2}\n" +
                     "EstablishedDate: {3}\n" +
                     "TaxCodeID: {4}\n" +
-                    "TaxCode: {5}\n" +
-                    "{6}", 
+                    "TaxCode: {5}\n"
+                    //"{6}"
+                    , 
                     ID, Name, NumOfEmployee, EstablishedDate.ToString(),
-                    TaxCodeID, TaxCode.toString(), listEmployeeString
+                   
+                    TaxCodeID, TaxCode.toString()
                     );
         }
     }

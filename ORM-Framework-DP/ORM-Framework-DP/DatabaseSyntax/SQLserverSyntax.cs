@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace ORM_Framework_DP
 {
-    public class MySQLSyntax : DatabaseSyntax
+    public class SQLserverSyntax : DatabaseSyntax
     {
-        //public string BuildQuery(string tableName,  Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
+        //public string BuildQuery(string tableName, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
         //{
+        //    //string query = "SELECT ";
+
+        //    //foreach(var col in selectedCols)
+        //    //{
+        //    //    query += col + ", ";
+        //    //}
+        //    //query =string.Format("{0} {1}" ,query[0..^1]  , tableName);
 
         //    string query = GetSelectAllPart(tableName);
 
@@ -20,6 +27,8 @@ namespace ORM_Framework_DP
 
         //    if (groupByColumeNames != null)
         //    {
+        //        string tag = GetGroupByPart(groupByColumeNames).Substring(9);
+        //        query = query.Replace("*", tag);
         //        query += " " + GetGroupByPart(groupByColumeNames);
         //    }
 
@@ -35,7 +44,6 @@ namespace ORM_Framework_DP
 
         public string BuildQuery(string tableName, string[] selectedCols, Condition whereConditon, Condition havingCondition, string[] groupByColumeNames)
         {
-
             string query = "SELECT ";
 
             foreach (var col in selectedCols)
@@ -43,16 +51,16 @@ namespace ORM_Framework_DP
                 query += col + ",";
             }
             query = query[0..^1];
-            query = string.Format("{0} FROM {1}", query, tableName);
+            query = string.Format("{0} FROM {1}", query , tableName);
 
-
+            
             if (whereConditon != null)
             {
                 query += " " + GetWherePart(whereConditon);
             }
 
             if (groupByColumeNames != null)
-            {
+            {                
                 query += " " + GetGroupByPart(groupByColumeNames);
             }
 
@@ -68,7 +76,7 @@ namespace ORM_Framework_DP
 
         public string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName)
         {
-            string query = string.Format("SELECT * FROM {0} WHERE 1", tableName);
+            string query = string.Format("SELECT * FROM {0} WHERE 1=1", tableName);
             foreach (var pair in columeNameValuePairs)
             {
                 query += " AND ";
@@ -99,10 +107,10 @@ namespace ORM_Framework_DP
             return "AND";
         }
 
-        public string GetConnectionString(string host, string dbName, string port, string uid, string password)
+        public string GetConnectionString(string host, string dbName, string uid, string port, string password)
         {
-            return string.Format("Server={0}; Database = {1}; port = {2}; UID = {3}; password={4};", 
-                host, dbName, port, uid, password);
+            return string.Format("Data Source={0};Initial Catalog={1};User ID={2};Password={3};Trusted_Connection=true;",
+                host, dbName, port, password);
         }
 
         public string GetGroupByPart(string[] columeNames)
@@ -129,11 +137,10 @@ namespace ORM_Framework_DP
         {
             return string.Format("WHERE {0}", condition.parseToSQL());
         }
-                
 
-        public  string BuildInsert(string tableName, List<string> primaryKeyName, Dictionary<string, object> values)
+        public string BuildInsert(string tableName, List<string> primaryKeyName, Dictionary<string, object> values)
         {
-            foreach(var primaryKey in primaryKeyName)
+            foreach (var primaryKey in primaryKeyName)
             {
                 if (values.ContainsKey(primaryKey))
                 {
@@ -157,11 +164,14 @@ namespace ORM_Framework_DP
             columnNameString = columnNameString[0..^1];
             valuesString = valuesString[0..^1];
             string query = string.Format("INSERT INTO {0} ({1}) VALUES ({2});", tableName, columnNameString, valuesString);
+            query += "SELECT CAST(scope_identity() AS int)";
+
+
             return query;
         }
-        
 
-        public  string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap)
+
+        public string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap)
         {
             string query = "UPDATE " + tableName + " SET ";
 
@@ -192,7 +202,7 @@ namespace ORM_Framework_DP
 
         }
 
-        public  string BuildUpdateWithCondition(string tableName, Dictionary<string, object> newColumnValuesMap, Condition condition)
+        public string BuildUpdateWithCondition(string tableName, Dictionary<string, object> newColumnValuesMap, Condition condition)
         {
             string query = "UPDATE " + tableName + " SET ";
 
@@ -222,9 +232,9 @@ namespace ORM_Framework_DP
             }
 
             Condition condition = Condition.And(_condition);
-                        
-            
-            query += " WHERE " + condition.parseToSQL()+";";
+
+
+            query += " WHERE " + condition.parseToSQL() + ";";
 
 
             return query;
@@ -236,7 +246,5 @@ namespace ORM_Framework_DP
 
             return query;
         }
-
-        
     }
 }

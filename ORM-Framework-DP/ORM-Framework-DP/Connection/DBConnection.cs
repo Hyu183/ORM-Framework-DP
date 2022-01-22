@@ -10,7 +10,7 @@ namespace ORM_Framework_DP
 {
     public interface DBConnection
     {
-        List<Dictionary<string, object>> SelectWithoutRelation(string query);
+        List<object> SelectWithoutRelation(string query,string [] selectedCols);
 
         int Delete(string query);
 

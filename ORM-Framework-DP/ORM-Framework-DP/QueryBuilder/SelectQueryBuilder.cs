@@ -12,15 +12,27 @@ namespace ORM_Framework_DP
         protected string orderByType;
         protected string[] groupBy;
         protected Condition havingCondition;
+        protected string[] selectedCols;
         DatabaseSyntax databaseSyntax;
 
         protected DBConnection dBConnection;
 
-        public SelectQueryBuilder(DBConnection db, string tableName, DatabaseSyntax databaseSyntax)
+        //public SelectQueryBuilder(DBConnection db, string tableName, DatabaseSyntax databaseSyntax)
+        //{
+        //    dBConnection = db;
+        //    this.databaseSyntax = databaseSyntax;
+        //    this.tableName = tableName;
+
+        //    whereCondition = null;
+        //    havingCondition = null;
+        //    groupBy = null;
+        //}
+        public SelectQueryBuilder(DBConnection db, string tableName, string[] selectedCols, DatabaseSyntax databaseSyntax)
         {
             dBConnection = db;
             this.databaseSyntax = databaseSyntax;
             this.tableName = tableName;
+            this.selectedCols = selectedCols;
             whereCondition = null;
             havingCondition = null;
             groupBy = null;
@@ -44,14 +56,19 @@ namespace ORM_Framework_DP
             return this;
         }
 
+        //private string getQueryString()
+        //{
+        //    return databaseSyntax.BuildQuery(tableName, whereCondition, havingCondition, groupBy);
+        //}
+
         private string getQueryString()
         {
-            return databaseSyntax.BuildQuery(tableName, whereCondition, havingCondition, groupBy);
+            return databaseSyntax.BuildQuery(tableName, selectedCols, whereCondition, havingCondition, groupBy);
         }
 
         public SelectQuery GetSelectQuery()
-        {
-            return new SelectQuery(getQueryString(), dBConnection, databaseSyntax);
+        {            
+            return new SelectQuery(getQueryString(), selectedCols, dBConnection, databaseSyntax);
         }
 
     }

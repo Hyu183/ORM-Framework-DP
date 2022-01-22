@@ -18,9 +18,11 @@ namespace ORM_Framework_DP
         string BuildSelectWhereFromValuePairs(Dictionary<string, string> columeNameValuePairs, string tableName);
         string ConvertValueToString(object value, Type type);
 
-        string BuildQuery(string tableName, Condition whereConditon, 
+        //string BuildQuery(string tableName, Condition whereConditon, 
+        //    Condition havingCondition, string[] groupByColumeNames);
+        string BuildQuery(string tableName, string[] selectedCols, Condition whereConditon,
             Condition havingCondition, string[] groupByColumeNames);
-        string BuildInsert(string tableName, List<string> columnNames, List<object> values);
+        string BuildInsert(string tableName, List<string> primaryKeyName, Dictionary<string,object> values);
         string BuildDelete(string tableName, Dictionary<string, object> primaryKeyValueMap);
         string BuildDeleteWithCondition(string tableName, Condition condition);
         string BuildUpdate(string tableName, Dictionary<string, object> primaryKeyValueMap, Dictionary<string, object> newColumnValuesMap);
