@@ -22,7 +22,11 @@ namespace ORM_Framework_DP
         }
 
         public TaxCode() { }
-
+        public TaxCode(int iD, string codeName)
+        {
+            ID = iD;
+            CodeName = codeName;
+        }
         public string toString()
         {
             return string.Format(
